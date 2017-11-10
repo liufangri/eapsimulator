@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-autowire="byName">
+
+
+    <!-- Services -->
+    <bean id="eapDeviceService" class="com.tp_link.web.eapsimulator.server.service.EapDeviceService"/>
+    <bean id="settingService" class="com.tp_link.web.eapsimulator.server.service.SettingService">
+        <property name="settingPath" value="${setting.path}"/>
+    </bean>
+    <bean id="eapLogService" class="com.tp_link.web.eapsimulator.server.service.EapLogService"/>
+    <!-- DAO -->
+    <bean id="eapDeviceDao" class="com.tp_link.web.eapsimulator.server.dao.EapDeviceDao"/>
+    <bean id="eapLogDao" class="com.tp_link.web.eapsimulator.server.dao.EapLogDao"/>
+</beans>

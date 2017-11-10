@@ -1,0 +1,25 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="EAP_Simulator:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/EAP_Simulator_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="EAP_Simulator_WEB/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="EAP_Simulator_WEB" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Spring MVC-4.3.10.RELEASE" />
+          <element id="library" level="project" name="Spring-4.3.10.RELEASE" />
+          <element id="library" level="project" name="mysql:mysql-connector-java:6.0.6" />
+          <element id="library" level="module" name="Hibernate 4.2.2-4.2.2" module-name="EAP_Simulator_WEB" />
+          <element id="library" level="project" name="aspectj:aspectjweaver:1.5.3" />
+          <element id="library" level="project" name="log4j:1.2.17" />
+          <element id="library" level="project" name="org.apache.commons:commons-dbcp2:2.1.1" />
+          <element id="library" level="project" name="com.google.code.gson:gson:2.5" />
+          <element id="library" level="project" name="io.netty:netty-all:4.1.9.Final" />
+          <element id="library" level="project" name="bouncycastle:bcprov-jdk15:140" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+       default-autowire="byName">
+    <!-- 开发环境下加载的数据源配置文件 -->
+    <beans profile="dev">
+        <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+            <property name="locations">
+                <list>
+                    <value>WEB-INF/config/dev/dbcp.properties</value>
+                    <value>WEB-INF/config/dev/setting.properties</value>
+                </list>
+            </property>
+        </bean>
+    </beans>
+
+    <beans>
+        <context:component-scan base-package="com.tp_link.web.eapsimulator.server.context"/>
+        <!-- 数据源配置 -->
+        <bean id="basicDataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+            <property name="driverClassName" value="${dbcp.driverClassName}"/>
+            <property name="url" value="${dbcp.url}"/>
+            <property name="username" value="${dbcp.username}"/>
+            <property name="password" value="${dbcp.password}"/>
+            <property name="initialSize" value="${dbcp.initialSize}"/>
+            <property name="maxTotal" value="${dbcp.maxTotal}"/>
+            <property name="maxIdle" value="${dbcp.maxIdle}"/>
+            <property name="minIdle" value="${dbcp.minIdle}"/>
+        </bean>
+
+        <!-- Hibernate配置 -->
+        <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+            <!-- 数据源 -->
+            <property name="dataSource" ref="basicDataSource"/>
+            <property name="hibernateProperties">
+                <props>
+                    <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                    <prop key="hibernate.show_sql">false</prop>
+                    <prop key="hibernate.cache.use_second_level_cache">false</prop>
+                    <prop key="hibernate.current_session_context_class">
+                        org.springframework.orm.hibernate4.SpringSessionContext
+                    </prop>
+                    <prop key="hibernate.jdbc.batch_size">50</prop>
+                </props>
+            </property>
+            <!-- 映射持久化类 -->
+            <property name="packagesToScan">
+                <list>
+                    <value>com.tp_link.web.eapsimulator.server.po</value>
+                </list>
+            </property>
+        </bean>
+
+        <!-- Transaction Manager -->
+        <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+            <property name="sessionFactory" ref="sessionFactory"/>
+        </bean>
+        <tx:advice id="txAdvice" transaction-manager="transactionManager">
+            <tx:attributes>
+                <tx:method name="add*" propagation="REQUIRED"/>
+                <tx:method name="save*" propagation="REQUIRED"/>
+                <tx:method name="del*" propagation="REQUIRED"/>
+                <tx:method name="modify*" propagation="REQUIRED"/>
+                <tx:method name="search" propagation="REQUIRED"/>
+                <tx:method name="get*" propagation="REQUIRED"/>
+                <tx:method name="*" read-only="true"/>
+            </tx:attributes>
+        </tx:advice>
+        <aop:config expose-proxy="true" proxy-target-class="true">
+            <aop:pointcut expression="execution(* com.tp_link.web.eapsimulator.server.dao.*.*(..))" id="express"/>
+            <aop:advisor pointcut-ref="express" advice-ref="txAdvice"/>
+        </aop:config>
+
+        <!-- EAP Device manager -->
+        <bean id="eapDeviceManager" class="com.tp_link.web.eapsimulator.server.context.EapDeviceManager"
+              init-method="init"/>
+
+        <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+            <property name="corePoolSize" value="1000"/>
+            <property name="maxPoolSize" value="1050"/>
+            <property name="queueCapacity" value="2000"/>
+        </bean>
+    </beans>
+</beans>

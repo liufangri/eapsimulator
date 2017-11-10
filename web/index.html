@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="./css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="./css/flat-ui.css"/>
+    <link rel="stylesheet" href="./css/index.css"/>
+    <link rel="stylesheet" href="./css/bootstrap-table.min.css"/>
+    <link rel="stylesheet" href="./css/font-awesome.min.css"/>
+
+    <title>EAP Simulator V1.0</title>
+</head>
+
+<body>
+<!-- Static navbar -->
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+            </button>
+            <!--<a class="navbar-brand" href="#">Virtual EAP</a>-->
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li id="manage" class="navbar-nav-link active"><a href="javascript:void(0);"
+                                                                  data-target="managerContainer">管理</a></li>
+                <!--<li id="setting" class="navbar-nav-link"><a href="javascript:void(0);"-->
+                <!--data-target="settingContainer">设置</a></li>-->
+                <li id="logs" class="navbar-nav-link "><a href="javascript:void(0);"
+                                                          data-target="logContainer">网络记录</a></li>
+            </ul>
+            <ul class="nav navbar-right">
+                <li><p id="runningP">Running : 0</p></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</div>
+
+<!-- EAP -->
+<div class="container container-active" id="managerContainer">
+    <!-- 新增虚拟EAP模态框 -->
+    <div class="modal fade" id="addEapDeviceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" style="width: 600px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">添加虚拟EAP</h4>
+                </div><!-- Modal-header -->
+                <div id="createSingle" class="modal-body">
+                    <div class="input-element">
+                        <label>设备名称</label>
+                        <input id="inputAddDeviceName" class="form-control" name="deviceName" type="text"/>
+                    </div>
+                    <div class="input-element">
+                        <label>机型名称</label>
+                        <input id="inputAddModelName" class="form-control" name="modelName" type="text"/>
+                    </div>
+                    <div class="input-element">
+                        <label>型号</label>
+                        <input id="inputAddModelVersion" class="form-control" name="modelVersion" type="text"/>
+                    </div>
+                    <div class="input-element">
+                        <label>软件版本</label>
+                        <input id="inputAddSoftwareVersion" class="form-control" name="softwareVersion" type="text"/>
+                    </div>
+                    <div class="input-element">
+                        <label>IP地址</label>
+                        <input id="inputAddIpAddress" class="form-control" name="ipAddress" type="text"/>
+                    </div>
+                    <div class="input-element">
+                        <label>掩码</label>
+                        <input id="inputAddMask" class="form-control" name="mask" type="text"/>
+                    </div>
+                    <div class="input-element">
+                        <label>MAC地址</label>
+                        <input id="inputAddMacAddress" class="form-control" name="macAddress" type="text"/>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="clear: left">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <!-- 确认新增按钮 -->
+                    <button type="button" class="btn btn-primary" onclick="addDevice()">确定</button>
+                </div><!-- modal-footer -->
+            </div><!-- modal-content -->
+        </div><!-- modal-dialog -->
+    </div>
+    <!-- 新增虚拟EAP模态框 -->
+
+
+    <!-- 批量新增虚拟EAP模态框 -->
+    <div class="modal fade" id="addEapDeviceBachModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" style="width: 600px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="bach">批量添加虚拟EAP</h4>
+                </div><!-- Modal-header -->
+                <div id="createBach" class="modal-body">
+                    <div class="input-sub">
+                        <label>EAP IP范围</label>
+                        <div>
+                            <input style="margin-right: 16px;" class="form-control form-inline"
+                                   id="inputAddBatchIpStart"
+                                   type="text" name="ipStart">
+                            <input class="form-control form-inline" id="inputAddBatchIpEnd" type="text" name="ipEnd">
+                        </div>
+                        <label>EAP 物理地址范围</label>
+                        <div>
+                            <input style="margin-right: 16px;" class="form-control form-inline"
+                                   id="inputAddBatchMacStart" type="text"
+                                   name="macStart">
+                            <input class="form-control form-inline" id="inputAddBatchMacEnd" type="text" name="macEnd">
+                        </div>
+                    </div>
+                    <div class="input-element">
+                        <label for="inputAddBatchModelName">机型名称</label>
+                        <input class="form-control" id="inputAddBatchModelName" type="text" name="defaultModelName">
+                    </div>
+                    <div class="input-element">
+                        <label for="inputAddBatchModelVersion">型号</label>
+                        <input class="form-control" id="inputAddBatchModelVersion" type="text"
+                               name="defaultModelVersion">
+                    </div>
+                    <div class="input-element">
+                        <label for="inputAddBatchSoftwareVersion">软件版本</label>
+                        <input class="form-control" id="inputAddBatchSoftwareVersion" type="text"
+                               name="defaultSoftwareVersion">
+                    </div>
+                    <div class="input-element">
+                        <label for="inputAddBatchNumber">新增数目
+                            <!--（目前可新增数目<label for="inputAddNumber">1</label>）-->
+                        </label>
+                        <input id="inputAddBatchNumber" class="form-control" name="number" type="text">
+                    </div>
+                    <div>
+                        <p></p>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="clear: left">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <!-- 确认新增按钮 -->
+                    <button type="button" class="btn btn-primary" onclick="addBatchDevice()">确定</button>
+                </div><!-- modal-footer -->
+            </div><!-- modal-content -->
+        </div><!-- modal-dialog -->
+    </div>
+    <!-- 批量新增虚拟EAP模态框 -->
+
+    <!-- 修改虚拟EAP模态框 -->
+    <div class="modal fade" id="modifyEapDeviceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" style="width: 600px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="modify">修改虚拟EAP信息</h4>
+                </div><!-- Modal-header -->
+                <div class="modal-body">
+                    <form id="modifyForm" method="get" action="">
+                        <input id="inputModifyId" name="id" type="text" hidden/>
+                        <div style="display: block; position: relative">
+                            <div class="input-element">
+                                <label for="inputModifyDeviceName">设备名称</label>
+                                <input id="inputModifyDeviceName" name="deviceName" class="form-control"
+                                       type="text"/>
+                            </div>
+                        </div>
+
+                        <div class="input-element">
+                            <label for="inputModifyMacAddress">物理地址</label>
+                            <input id="inputModifyMacAddress" disabled="true" name="macAddress" class="form-control"
+                                   type="text"/>
+                        </div>
+
+                        <div class="input-element">
+                            <label>IP地址</label>
+                            <input id="inputModifyIpAddress" name="ipAddress" type="text" class="form-control"/>
+                        </div>
+                        <div class="input-element">
+                            <label for="inputModifyMask">掩码</label>
+                            <input id="inputModifyMask" class="form-control" name="mask" type="text"/>
+                        </div>
+                        <div class="input-element">
+                            <label>机型名称</label>
+                            <input id="inputModifyModelName" name="modelName" disabled="true" class="form-control">
+                        </div>
+                        <div class="input-element">
+                            <label for="inputModifyModelVersion">型号</label>
+                            <input id="inputModifyModelVersion" name="modelVersion" disabled="true" class="form-control"
+                                   type="text"/>
+                        </div>
+
+                        <div class="input-element">
+                            <label for="inputModifySoftwareVersion">软件版本</label>
+                            <input id="inputModifySoftwareVersion" name="softwareVersion" disabled="true"
+                                   class="form-control"
+                                   type="text"/>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="clear: left">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <!-- 确认修改按钮 -->
+                    <button type="button" class="btn btn-primary" onclick="modifyDevice();">确定</button>
+                </div><!-- modal-footer -->
+            </div><!-- modal-content -->
+        </div><!-- modal-dialog -->
+    </div>
+    <!-- 修改虚拟EAP模态框 -->
+
+    <div id="toolbar">
+        <!-- 添加新增操作，删除选中的行 -->
+        <div>
+            <button data-toggle="modal" data-target="#addEapDeviceModal" class="btn btn-default"
+                    onclick="refreshAddModal()">新增设备
+            </button>
+            <button data-toggle="modal" data-target="#addEapDeviceBachModal" class="btn btn-default"
+                    onclick="refreshAddBatchModal()">新增多台
+            </button>
+            <button onClick="deleteAllCheckedDevices()" class="btn btn-default">删除</button>
+            <button onclick="runAllCheckedDevices()" class="btn btn-default">运行</button>
+            <button onclick="stopAllCheckedDevices()" class="btn btn-default">停止</button>
+        </div>
+    </div>
+
+    <!-- 虚拟机列表 -->
+    <table id="deviceTable" data-classes="table table-hover" data-show-pagination-switch="false" data-page-size="25"
+           data-pagination="true" data-show-refresh="true" data-toolbar="#toolbar" data-page-list="[25, 50, 100]"
+           class="table table-striped" data-show-footer="false"></table>
+    <!-- 虚拟机列表 -->
+
+</div>
+<!-- EAP -->
+
+<!-- 日志 -->
+<div class="container container-fade" id="logContainer">
+    <!-- 查看内容模态框 -->
+    <div class="modal fade" id="showFullLogModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" style="width: 600px;">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                </div><!-- Modal-header -->
+                <div class="modal-body">
+                    <textarea class="full-log" id="logArea" spellcheck="false" readonly></textarea>
+                </div>
+                <div class="modal-body">
+                    <span style="font-family: Consolas,serif; display: inline-block; width: 90px">Sender</span>
+                    <span id="senderP" style="font-family: Consolas,serif; display: inline-block;"></span>
+                    <div style="clear: both"></div>
+                    <span style="font-family: Consolas,serif; display: inline-block; width: 90px">Receiver</span>
+                    <span id="receiverP" style="font-family: Consolas,serif; display: inline-block;"></span>
+                </div>
+                <div class="modal-footer" style="clear: left">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div><!-- modal-footer -->
+            </div><!-- modal-content -->
+        </div><!-- modal-dialog -->
+
+    </div>
+    <!-- 查看内容模态框 -->
+
+    <table id="logTable" data-classes="table table-hover" data-show-pagination-switch="false" data-page-size="25"
+           data-pagination="true" data-show-refresh="true" data-page-list="[25, 50, 100]"
+           class="table" data-show-footer="false" data-height="720"></table>
+</div>
+<!-- 日志 -->
+
+</body>
+<script src="./script/jquery-3.1.1.min.js"></script>
+<script src="./script/flat-ui.js"></script>
+<script src="./script/bootstrap-table.js"></script>
+<!--<script src="./script/vendor/application.js"></script>-->
+<!--<script src="./script/vendor/respond.min.js"></script>-->
+<!--<script src="./script/vendor/bootstrap-tagsinput.js"></script>-->
+
+<script type="text/javascript" src="./script/index.js"></script>
+<script type="text/javascript">
+    const validate = {
+        num: function (num) {
+            if (num == undefined) {
+                return 'empty';
+            }
+            return 'valid';
+        },
+        name: function (name) {
+            let reg = /^[a-zA-Z\d#][a-zA-Z\d# _.-]+[a-zA-Z\d#_.-]$/;
+            let nameStr = name.toString();
+            if (nameStr == "") {
+                return 'empty';
+            } else if (nameStr.length > 64) {
+                // name too long
+                return 'too_long';
+            } else if (!reg.test(nameStr)) {
+                // name not valid.
+                return 'invalid';
+            }
+            return 'valid';
+        },
+        modelName: function (modelName) {
+            let reg = /^[a-zA-Z\d#][a-zA-Z\d# _.-]+[a-zA-Z\d#_.-]$/;
+            let modelNameStr = modelName.toString();
+            if (modelNameStr == "") {
+                return 'empty';
+            } else if (modelNameStr.length > 64) {
+                return 'too_long';
+            } else if (!reg.test(modelNameStr)) {
+                return 'invalid';
+            }
+            return 'valid';
+        },
+        mac: function (macAddress) {
+            let reg = /^([a-fA-F\d]{2}:){5}[a-fA-F\d]{2}$/;
+            let mac = macAddress.toString();
+            if (macAddress == "") {
+                return 'empty';
+            } else if (mac.length > 32) {
+                // too long!!!
+                return 'too_long';
+            } else if (!reg.test(macAddress.toString())) {
+                // not a mac address!!!
+                return 'invalid';
+            }
+            return 'valid';
+        },
+        ip: function (ipAddress) {
+            let reg = /^([\d]{1,3}\.){3}[\d]{1,3}$/;
+            let ip = ipAddress.toString();
+            if (ipAddress == "") {
+                return 'empty';
+            } else if (!reg.test(ip)) {
+                // not a ip address!!!
+                return 'invalid';
+            } else {
+                let nums = ip.split('.');
+                for (let num in nums) {
+                    if (nums[num] > 255) {
+                        // num too large!!!
+                        return 'invalid';
+                    }
+                }
+            }
+            return 'valid';
+        },
+        mask: function (maskInput) {
+            let reg = /^([\d]{1,3}\.){3}[\d]{1,3}$/;
+            let mask = maskInput.toString();
+            let minNum = '0';
+            let numSet = ['128', '192', '224', '240', '248', '252', '254'];
+            let maxNum = '255';
+
+            if (maskInput == "") {
+                return 'empty';
+            } else if (!reg.test(mask)) {
+                // not a mask
+                return 'invalid';
+            } else {
+                let nums = mask.split('.');
+                let expect = 2;
+                for (let i in nums) {
+                    if (expect == 2) {
+                        if (nums[i] == maxNum) {
+                            expect = 1;
+                            continue;
+                        } else if (numSet.includes(nums[i])) {
+                            expect = 0;
+                        } else {
+                            // bad number
+                            return 'invalid';
+                        }
+
+                    } else if (expect == 1) {
+                        if (nums[i] == maxNum) {
+                            continue;
+                        } else if (numSet.includes(nums[i]) || nums[i] == minNum) {
+                            expect = 0;
+                        } else {
+                            // bad number
+                            return 'invalid';
+                        }
+                    } else if (expect == 0) {
+                        if (nums[i] != minNum) {
+                            // bad number
+                            return 'invalid';
+                        }
+                    }
+                }
+            }
+            return 'valid';
+        },
+        model: function (modelVersion) {
+            let reg = /^[a-zA-Z\d._-]+$/;
+            let versionStr = modelVersion.toString();
+            if (modelVersion == "") {
+                return 'empty';
+            } else if (!reg.test(versionStr)) {
+                // model version bad input.
+                return 'invalid';
+            }
+            return 'valid';
+        },
+        soft: function (softwareVersion) {
+            let reg = /^[a-zA-Z\d#][a-zA-Z\d# _.-]*[a-zA-Z\d#_.-]?$/;
+            let versionStr = softwareVersion.toString();
+            if (softwareVersion == "") {
+                return 'empty';
+            } else if (!reg.test(versionStr)) {
+                // software version bad input.
+                return 'invalid';
+            }
+            return 'valid';
+        },
+        ip_start: function (ipAddress) {
+            return this.ip(ipAddress);
+        },
+        ip_end: function (ipAddress) {
+            return this.ip(ipAddress);
+        },
+        mac_start: function (macAddress) {
+            return this.mac(macAddress);
+        },
+        mac_end: function (macAddress) {
+            return this.mac(macAddress);
+        },
+        modelVersion: function (modelVersion) {
+            let reg = /^[a-zA-Z\d#][a-zA-Z\d# _.-]*[a-zA-Z\d#_.-]?$/;
+            let versionStr = modelVersion.toString();
+            if (modelVersion == "") {
+                return 'empty';
+            } else if (!reg.test(versionStr)) {
+                // software version bad input.
+                return 'invalid';
+            }
+            return 'valid';
+        }
+    };
+
+    const input_add = {
+        ip: $('#inputAddIpAddress'),
+        name: $('#inputAddDeviceName'),
+        mac: $('#inputAddMacAddress'),
+        model: $('#inputAddModelVersion'),
+        soft: $('#inputAddSoftwareVersion'),
+        mask: $('#inputAddMask'),
+        modelName: $('#inputAddModelName')
+    };
+
+    const input_modify = {
+        ip: $('#inputModifyIpAddress'),
+        name: $('#inputModifyDeviceName'),
+        mac: $('#inputModifyMacAddress'),
+        model: $('#inputModifyModelVersion'),
+        soft: $('#inputModifySoftwareVersion'),
+        mask: $('#inputModifyMask')
+    };
+
+    const input_setting = {
+        ip_start: $('#inputAddBatchIpStart'),
+        ip_end: $('#inputAddBatchIpEnd'),
+        mac_start: $('#inputAddBatchMacStart'),
+        mac_end: $('#inputAddBatchMacEnd')
+    };
+
+    const input_addbatch = {
+        num: $('#inputAddBatchNumber'),
+        ip_start: $('#inputAddBatchIpStart'),
+        ip_end: $('#inputAddBatchIpEnd'),
+        mac_start: $('#inputAddBatchMacStart'),
+        mac_end: $('#inputAddBatchMacEnd'),
+        model: $('#inputAddBatchModelName'),
+        modelVersion: $('#inputAddBatchModelVersion'),
+        soft: $('#inputAddBatchSoftwareVersion')
+
+    };
+
+    const error = {
+        num: {
+            empty: "输入不能为空"
+        },
+        ip: {
+            empty: '输入不能为空',
+            invalid: '非法的IP地址'
+        },
+        modelName: {
+            empty: '输入不能为空',
+            too_long: '名称长度：3至64个字符',
+            invalid: '名称字符为大小写字母，数字0-9，"-", "_", "#"'
+        },
+        name: {
+            empty: '输入不能为空',
+            too_long: '名称长度：3至64个字符',
+            invalid: '名称字符为大小写字母，数字0-9，"-", "_", "#"'
+        },
+        mac: {
+            empty: '输入不能为空',
+            invalid: '非法的物理地址'
+        },
+        model: {
+            empty: '输入不能为空',
+            too_long: '过长',
+            invalid: '非法的字符'
+        },
+        soft: {
+            empty: '输入不能为空',
+            too_long: '过长',
+            invalid: '非法的字符'
+        },
+        mask: {
+            empty: '输入不能为空',
+            invalid: '非法的掩码'
+        },
+        ip_start: {
+            empty: '输入不能为空',
+            invalid: '非法的IP地址'
+        },
+        ip_end: {
+            empty: '输入不能为空',
+            invalid: '非法的IP地址'
+        },
+        mac_start: {
+            empty: '输入不能为空',
+            invalid: '非法的物理地址'
+        },
+        mac_end: {
+            empty: '输入不能为空',
+            invalid: '非法的物理地址'
+        },
+        modelVersion: {
+            empty: '输入不能为空',
+            too_long: '过长',
+            invalid: '非法的字符'
+        }
+    };
+
+    const data_type = {
+        0x0001: 'Discovery',
+        0x0002: 'Pre adopt request',
+        0x0003: 'Pre connect info',
+        0x0010: 'Adopt request',
+        0x0020: 'Adopt response',
+        0x0100: 'Inform request',
+        0x0200: 'Inform response',
+        0x1000: 'Set request',
+        0x2000: 'Set response',
+        0x4000: 'Forget request',
+        0x20000: 'Forget request no reset',
+        0x8000: 'Upgrade request',
+        0x10000: 'Upgrade response'
+    };
+
+    var settings = {};
+
+    // Check inputs
+    let inputErrorClass = 'input-error';
+    let dataMessage = 'data-message';
+    window.deviceOperateEvents = {
+        'click .remove': function (e, value, row, index) {
+            $.ajax({
+                url: '/eapsimulator/delEapDevById.form',
+                method: 'GET',
+                data: {
+                    deviceIds: row.id
+                },
+                success: (data) => {
+                    let res = JSON.parse(data.toString());
+                    if (res.result == "OK") {
+                        $('#deviceTable').bootstrapTable('refresh');
+                    } else {
+                        alert("delete fail.")
+                    }
+                },
+                error: (data) => {
+                    alert("delete fail.");
+                }
+            })
+        },
+        'click .modify': function (e, value, row, index) {
+            $('#inputModifyId').val(row.id);
+            $('#inputModifyDeviceName').val(row.deviceName);
+            $('#inputModifyMacAddress').val(row.macAddress);
+            $('#inputModifyIpAddress').val(row.ipAddress);
+            $('#inputModifyModelVersion').val(row.modelVersion);
+            $('#inputModifySoftwareVersion').val(row.softwareVersion);
+            $('#inputModifyMask').val(row.mask);
+            $('#inputModifyModelName').val(row.modelName);
+
+            let inputs = $("#addEapDeviceModal").find("input");
+            inputs.removeClass('input-error');
+            $("#warningBlog").css("opacity", 1).hide();
+        },
+        'click .view-log': function (e, value, row, index) {
+            // 查看某条EAP的网络记录
+            $('#logs').click();
+            tables.log.url = '/eapsimulator/getLogsByDeviceId.form';
+            tables.log.queryParams = function (params) {
+                return {
+                    deviceId: row.id,
+                    offset: params.offset,
+                    limit: params.limit
+                }
+            };
+            let logTable = $('#logTable');
+            logTable.bootstrapTable('destroy');
+            logTable.bootstrapTable(tables.log);
+        },
+        'click .btn-group': function (e, value, row, index) {
+
+            if ($(this).hasClass('open')) {
+                $(this).removeClass('open');
+            } else {
+                if (!e.target.classList.contains('view-log')) {
+                    $(this).addClass('open');
+                }
+            }
+        },
+        'click .start': function (e, value, row, index) {
+//            $(e.target).attr('disable', true);
+            $.ajax({
+                url: '/eapsimulator/startEap.form',
+                method: 'POST',
+                data: {
+                    idStr: row.id
+                },
+                success: function (data) {
+                    let res = JSON.parse(data.toString());
+                    if (res.result == 'OK') {
+                        startGatherState(row.id, index);
+                        startGatherRunning();
+                    }
+                }
+            })
+        },
+        'click .stop': function (e, value, row, index) {
+//            $(e.target).attr('disable', true);
+            $.ajax({
+                url: '/eapsimulator/stopEap.form',
+                method: 'POST',
+                data: {
+                    idStr: row.id
+                },
+                success: function (data) {
+                    let res = JSON.parse(data.toString());
+                    if (res.result == 'OK') {
+                        startGatherState(row.id, index);
+                        startGatherRunning();
+                    }
+                }
+            })
+        },
+        'click .refresh-state': function (e, value, row, index) {
+            startGatherState(row.id, index);
+            startGatherRunning();
+        }
+    };
+
+    window.logOperationEvents = {
+        'click .show-more': function (e, value, row, index) {
+            $('#logArea').text(format(value.toString().replace(/\\n/g, '\\\\n').replace(/\\t/, '\\\\t'), false));
+            $('#senderP').text(row.sourceAddress + ":" + row.sourcePort);
+            $('#receiverP').text(row.destAddress + ":" + row.destPort);
+        },
+    };
+    var tables = {
+        log: {
+            url: '/eapsimulator/getAllLogs.form',
+            sidePagination: "server",
+            method: 'GET',
+            showHeader: true,
+            showFooter: false,
+            undefinedText: '',
+            sortName: 'createTime',
+            sortOrder: 'desc',
+            cache: false,
+            columns: [
+                {
+                    field: 'checked',
+                    checkbox: true
+                },
+                {
+                    field: 'num',
+                    title: '',
+                    valign: 'middle',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return index + 1;
+                    }
+                },
+                {
+                    field: 'type',
+                    title: 'Type',
+                    valign: 'middle',
+                    formatter: function (value, row, index) {
+                        return [
+                            '<span style="font-weight: bold; margin-right: 2px">' + value + '</span>',
+                            '<span style="">-</span>',
+                            '<span style="margin-left: 2px">' + data_type[value] + '</span>'
+                        ].join('');
+                    }
+                },
+                {
+                    field: 'eapMac',
+                    title: 'EAP MAC',
+                    valign: 'middle',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return '<span style="">' + value + '</span>'
+                    }
+                },
+                {
+                    field: 'action',
+                    title: 'Action',
+                    valign: 'middle',
+                },
+                {
+                    field: 'comment',
+                    title: 'Content',
+                    valign: 'middle',
+                    events: logOperationEvents,
+                    formatter: function (value, row, index) {
+                        let val = value.toString();
+                        return '<span style="">' + (val.length < 30 ? val : val.substring(0, 30)) + '...' + '</span>' +
+                            '<a class="show-more" href="javascript:void(0)"' +
+                            ' data-toggle="modal" data-target="#showFullLogModal" style="float: right">more</a>';
+                    }
+                },
+                {
+                    field: 'createTime',
+                    title: 'Time',
+                    valign: 'middle',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        let time = new Date();
+                        time.setTime(value);
+
+                        let year = time.getFullYear().toString();
+                        let month = (time.getMonth() + 1).toString();
+                        month = month.length > 1 ? month : "0" + month;
+                        let date = time.getDate().toString();
+                        date = date.length > 1 ? date : "0" + date;
+                        let hour = time.getHours().toString();
+                        hour = hour.length > 1 ? hour : "0" + hour;
+                        let min = time.getMinutes().toString();
+                        min = min.length > 1 ? min : "0" + min;
+                        let sec = time.getSeconds().toString();
+                        sec = sec.length > 1 ? sec : "0" + sec;
+                        let mill = time.getMilliseconds().toString();
+                        mill = (mill.length > 2 ? mill : (mill.length > 1 ? "0" + mill : "00" + mill));
+
+                        return year + "-" + month + "-" + date + " " +
+                            hour + ":" + min + ":" + sec + "." + mill;
+                    }
+                }
+            ]
+        },
+        device: {
+            url: '/eapsimulator/getEapDevJson.form',
+            sidePagination: "server",
+            method: 'GET',
+            showHeader: true,
+            showFooter: false,
+            undefinedText: '',
+            sortName: 'createTime',
+            sortOrder: 'desc',
+            cache: false,
+//            onPostBody: function () {
+//
+//            },
+            columns: [
+                {
+                    field: 'checked',
+                    checkbox: true,
+                    valign: 'middle',
+                    align: 'center',
+                },
+                {
+                    field: 'num',
+                    title: '',
+                    valign: 'middle',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        row.index = index;
+                        return index + 1;
+                    }
+                },
+                {
+                    field: 'deviceName',
+                    title: '设备名称',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    field: 'modelName',
+                    title: '机型名称',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    field: 'modelVersion',
+                    title: '型号',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    field: 'softwareVersion',
+                    title: '软件版本',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    field: 'macAddress',
+                    title: '硬件地址',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    field: 'ipAddress',
+                    title: 'IP地址',
+                    valign: 'middle',
+                    align: 'center'
+                },
+//                {
+//                    field: 'mask',
+//                    title: '掩码',
+//                    valign: 'middle',
+//                    align: 'center'
+//                },
+                {
+                    field: 'state',
+                    title: '状态',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '操作',
+                    valign: 'middle',
+                    align: 'center',
+                    events: deviceOperateEvents,
+                    formatter: function (value, row, index) {
+                        return [
+                            '<div class="btn-group">' +
+                            '<button class="btn btn-default refresh-state" title="Refresh">刷新</button>' +
+//                            '<button class="btn btn-default start" title="run" disabled>运行</button>' +
+//                            '<button class="btn btn-default view-log" title="Show logs">记录</button>' +
+                            '<button class="btn btn-default dropdown-toggle" ><span class="caret"></span></button>' +
+                            '<ul role="menu" class="dropdown-menu">' +
+                            '<li><a class="start" href="javascript:void(0);" title="Run" disabled="true">运行</a></li>' +
+                            '<li><a class="stop" href="javascript:void(0);" title="Stop" disabled="true" hidden>停止</a></li>' +
+                            '<li class="divider"></li>' +
+                            '<li><a class="view-log" href="javascript:void(0);" title="Show logs" disabled="true">查看记录</a></li>' +
+                            '<li class="divider"></li>' +
+                            '<li><a class="modify" href="javascript:void(0);" title="Modify" data-toggle="modal" data-target="#modifyEapDeviceModal" style="margin-right: 6px; font-size: 12px">修改</a></li>' +
+                            '<li><a class="remove" href="javascript:void(0);" title="Remove" style="font-size: 12px">删除</a></li>' +
+                            '</ul>' +
+                            '</div>'
+                        ].join('');
+                    }
+                }
+            ]
+        }
+    };
+
+    function initNavbar() {
+        $('li.navbar-nav-link').on('click', function () {
+                let t = $(this);
+                if (!t.hasClass('active')) {
+                    $('li.active').removeClass('active');
+                    t.addClass('active');
+                    let id = t.children('a').attr('data-target');
+                    $('.container-active').removeClass('container-active').addClass('container-fade');
+                    $('#' + id).removeClass('container-fade').addClass('container-active');
+                }
+            }
+        );
+    }
+
+    // Init deviceTable
+    function initDeviceTable() {
+        $('#deviceTable').bootstrapTable(tables.device);
+    }
+
+    // Init logTable
+    function initLogTable() {
+        $('#logTable').bootstrapTable(tables.log);
+    }
+
+    // Delete checked devices
+    function deleteAllCheckedDevices() {
+        let selected = $('#deviceTable').bootstrapTable('getSelections');
+        let ids = "";
+        if (selected.length == 0) {
+            return;
+        } else {
+            for (let i in selected) {
+                ids = ids + selected[i].id + ",";
+            }
+            if (ids.endsWith(",")) {
+                ids = ids.substr(0, ids.length - 1);
+            }
+        }
+        $.ajax({
+            url: '/eapsimulator/delEapDevById.form',
+            method: 'POST',
+            data: {
+                deviceIds: ids
+            },
+            success: (data) => {
+                let result = JSON.parse(data.toString());
+                if (result.result == "OK") {
+                    $('#deviceTable').bootstrapTable('refresh');
+                } else {
+                    $('#deviceTable').bootstrapTable('refresh');
+                }
+            },
+            error: (data) => {
+                //TODO: Handle error
+            }
+        })
+
+    }
+
+    function runAllCheckedDevices() {
+        let selected = $('#deviceTable').bootstrapTable('getSelections');
+        for (let i in selected) {
+            window.deviceOperateEvents['click .start'](undefined, undefined, selected[i], selected[i].index);
+        }
+    }
+
+    function stopAllCheckedDevices() {
+        let selected = $('#deviceTable').bootstrapTable('getSelections');
+        for (let i in selected) {
+            window.deviceOperateEvents['click .stop'](undefined, undefined, selected[i], selected[i].index)
+        }
+    }
+
+    function refreshAddModal() {
+        let inputs = $("#addEapDeviceModal").find("input");
+        inputs.val("");
+        inputs.removeClass('input-error');
+        let warnings = $("#addEapDeviceModal").find("div.warning-blog");
+        warnings.hide();
+    }
+
+    function refreshAddBatchModal() {
+        let inputs = $('#addEapDeviceBachModal').find("input");
+//        inputs.val("");
+        inputs.removeClass(inputErrorClass);
+        $('#addEapDeviceBachModal').find("div.warning-blog").hide();
+    }
+
+    function setErrorMessage(input, message) {
+        input.addClass(inputErrorClass);
+        input.attr(dataMessage, message);
+    }
+
+    /**
+     * Check the listed member of _input.
+     * @param _list
+     * @param _validate
+     * @param _input
+     * @param _value
+     * @param _error
+     */
+    function checkAndSetError(_list, _validate, _input, _value, _error) {
+        let allPass = true;
+        for (let v in _list) {
+            let t = _list[v];
+            let res = _validate[t](_value[t]);
+            if (res != 'valid') {
+                setErrorMessage(_input[t], _error[t][res]);
+                allPass = false;
+            } else {
+                _input[t].removeClass('input-error');
+            }
+        }
+        return allPass;
+    }
+
+    /**
+     * ADD a EAP device
+     */
+    function addDevice() {
+
+        let value = {
+            ip: input_add.ip.val(),
+            modelName: input_add.modelName.val(),
+            name: input_add.name.val(),
+            mac: input_add.mac.val(),
+            model: input_add.model.val(),
+            soft: input_add.soft.val(),
+            mask: input_add.mask.val()
+        };
+
+        if (!checkAndSetError(['ip', 'modelName', 'name', 'mac', 'model', 'soft', 'mask'], validate, input_add, value, error)) {
+            $('#addEapDeviceModal').find('input.input-error')[0].focus();
+            return;
+        }
+
+        $.ajax({
+            url: '/eapsimulator/addEapDev.form',
+            method: 'POST',
+            data: {
+                deviceName: value.name,
+                modelName: value.modelName,
+                macAddress: value.mac,
+                ipAddress: value.ip,
+                modelVersion: value.model,
+                softwareVersion: value.soft,
+                mask: value.mask
+            },
+            success: (data) => {
+                let res = JSON.parse(data.toString());
+                if (res.result == "OK") {
+                    $('#addEapDeviceModal').modal('hide');
+                    $('#deviceTable').bootstrapTable('refresh');
+                } else {
+                    //TODO: Inform add failed
+                }
+            },
+            error: (data) => {
+                //TODO: Handle error
+            }
+        });
+    }
+
+    function addBatchDevice() {
+        let value = {
+            num: $('#inputAddBatchNumber').val(),
+            ip_start: $('#inputAddBatchIpStart').val(),
+            ip_end: $('#inputAddBatchIpEnd').val(),
+            mac_start: $('#inputAddBatchMacStart').val(),
+            mac_end: $('#inputAddBatchMacEnd').val(),
+            model: $('#inputAddBatchModelName').val(),
+            modelVersion: $('#inputAddBatchModelVersion').val(),
+            soft: $('#inputAddBatchSoftwareVersion').val()
+        };
+
+        if (!checkAndSetError(['num', 'ip_start', 'ip_end', 'mac_start', 'mac_end', 'model', 'modelVersion', 'soft'],
+                validate, input_addbatch, value, error)) {
+            $('#addEapDeviceBachModal').find('input.input-error')[0].focus();
+            return;
+        }
+
+        $.ajax({
+            url: '/eapsimulator/addBatch.form',
+            method: 'POST',
+            data: {
+                number: value.num,
+                ipStart: value.ip_start,
+                ipEnd: value.ip_end,
+                macStart: value.mac_start,
+                macEnd: value.mac_end,
+                modelName: value.model,
+                modelVersion: value.modelVersion,
+                softwareVersion: value.soft
+            },
+            success: function (data) {
+                let res = JSON.parse(data.toString());
+                if (res.result == 'OK') {
+                    $('#addEapDeviceBachModal').modal('hide');
+                    $('#deviceTable').bootstrapTable('refresh');
+                }
+                else if (res.result == 'fail') {
+                    $('#addEapDeviceBachModal').find("div.warning-blog").hide();
+                    alert("Created: " + res.created + "\n" + res.message);
+                }
+            },
+            error: function (data) {
+                //TODO: handle error
+            }
+        });
+    }
+
+    /**
+     * MODIFY a EAP device
+     */
+    function modifyDevice() {
+        // Get inputs
+        let value = {
+            id: $('#inputModifyId').val(),
+            ip: input_modify.ip.val(),
+            name: input_modify.name.val(),
+            mac: input_modify.mac.val(),
+            model: input_modify.model.val(),
+            soft: input_modify.soft.val(),
+            mask: input_modify.mask.val()
+        };
+
+        // Check inputs and set error message
+        if (!checkAndSetError(['ip', 'name', 'mac', 'model', 'soft', 'mask'], validate, input_modify, value, error)) {
+            $('#modifyEapDeviceModal').find('input.input-error')[0].focus();
+            return;
+        }
+
+        $.ajax({
+            url: '/eapsimulator/modifyEapDevice.form',
+            data: {
+                id: value.id,
+                deviceName: value.name,
+                macAddress: value.mac,
+                ipAddress: value.ip,
+                modelVersion: value.model,
+                softwareVersion: value.soft,
+                mask: value.mask
+            },
+            method: 'POST',
+            success: (data) => {
+                let res = JSON.parse(data.toString());
+                if (res.result == "OK") {
+                    $('#modifyEapDeviceModal').modal('hide');
+                    $('#deviceTable').bootstrapTable('refresh');
+                } else {
+                    // TODO: Inform modify failed.
+                }
+            },
+            error: (data) => {
+                //TODO: Handle error
+            }
+        })
+    }
+
+    function refreshSetting() {
+        $.ajax({
+            url: '/eapsimulator/getSettings.form',
+            method: 'POST',
+            success: (data) => {
+                let res = JSON.parse(data.toString());
+                input_setting.ip_start.val(res['base.ip.start']);
+                input_setting.ip_end.val(res['base.ip.end']);
+                input_setting.mac_start.val(res['base.mac.start']);
+                input_setting.mac_end.val(res['base.mac.end']);
+
+                settings["base.ip.start"] = res['base.ip.start'];
+                settings["base.ip.end"] = res['base.ip.end'];
+                settings["base.mac.start"] = res['base.mac.start'];
+                settings["base.mac.end"] = res['base.mac.end'];
+            },
+            error: (data) => {
+                //TODO: Handle error
+            }
+        });
+    }
+
+    function sleep0(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    async function fadeInAndOut(s, ms) {
+        s.fadeIn(100);
+        await sleep0(ms);
+        s.fadeOut(1000);
+    }
+
+    function storeSetting() {
+        let value = {
+            ip_start: input_setting.ip_start.val(),
+            ip_end: input_setting.ip_end.val(),
+            mac_start: input_setting.mac_start.val(),
+            mac_end: input_setting.mac_end.val()
+        };
+        if (!checkAndSetError(['ip_start', 'ip_end', 'mac_start', 'mac_end'], validate, input_setting, value, error)) {
+            $('.setting-content').find('input.input-error')[0].focus();
+            return;
+        }
+        $.ajax({
+            url: '/eapsimulator/storeSettings.form',
+            method: 'POST',
+            data: {
+                "base.ip.start": value.ip_start,
+                "base.ip.end": value.ip_end,
+                "base.mac.start": value.mac_start,
+                "base.mac.end": value.mac_end
+            },
+            success: function (data) {
+                let res = JSON.parse(data.toString());
+                let s = $('#settingResult');
+                if (res.result == 'OK') {
+                    s.css('color', '#16a085').text("Save success!");
+                    fadeInAndOut(s, 1000);
+                } else {
+                    s.css('color', 'red').text('Save failed!');
+                    fadeInAndOut(s, 3000);
+                }
+            },
+            fail: async function (data) {
+                s.css('color', 'red').text('Save failed!');
+                fadeInAndOut(s, 3000);
+            }
+
+        })
+
+    }
+
+    function createWarningMessage(id) {
+        return '<div class="warning-blog" id="' + id + '" hidden>' +
+            '<div class="message">' +
+            '<p id="warnMessage">Undefined</p>' +
+            '</div>' +
+            '<div class="caret"></div>' +
+            '</div>';
+    }
+
+    function format(txt, compress) {
+        var indentChar = '    ';
+        if (/^\s*$/.test(txt)) {
+            console.error('数据为空');
+            return;
+        }
+        try {
+            var data = eval('(' + txt + ')');
+        }
+        catch (e) {
+            console.log('数据源非JSON格式');
+            return txt;
+        }
+        var draw = [], last = false, This = this, line = compress ? '' : '\n', nodeCount = 0, maxDepth = 0;
+
+        var notify = function (name, value, isLast, indent, formObj) {
+            nodeCount++;
+            for (var i = 0, tab = ''; i < indent; i++)tab += indentChar;
+            tab = compress ? '' : tab;
+            maxDepth = ++indent;
+            if (value && value.constructor == Array) {
+                draw.push(tab + (formObj ? ('"' + name + '":') : '') + '[' + line);
+                for (var i = 0; i < value.length; i++)
+                    notify(i, value[i], i == value.length - 1, indent, false);
+                draw.push(tab + ']' + (isLast ? line : (',' + line)));
+            } else if (value && typeof value == 'object') {
+                draw.push(tab + (formObj ? ('"' + name + '":') : '') + '{' + line);
+                var len = 0, i = 0;
+                for (var key in value) len++;
+                for (var key in value) notify(key, value[key], ++i == len, indent, true);
+                draw.push(tab + '}' + (isLast ? line : (',' + line)));
+            } else {
+                if (typeof value == 'string') value = '"' + value.replace(/\n/g, '\\n').replace(/\t/g, '\\t') + '"';
+                draw.push(tab + (formObj ? ('"' + name + '":') : '') + value + (isLast ? '' : ',') + line);
+            }
+        };
+        var isLast = true, indent = 0;
+        notify('', data, isLast, indent, false);
+        return draw.join('');
+    }
+
+    function addInputListeners() {
+        let inputs = $("input.form-control");
+        inputs.attr("spellcheck", false);
+        for (let i in inputs) {
+            let wId = 'warning' + inputs[i].id;
+            let input = $('#' + inputs[i].id);
+            let warningMessageTemplate = createWarningMessage(wId);
+            if (input.length == 1) {
+                input.before(warningMessageTemplate);
+            }
+
+        }
+
+        inputs.on('focus', function () {
+            let t = $(this);
+            if (t.hasClass('input-error')) {
+                let wId = 'warning' + t.attr('id');
+                let w = $('#' + wId);
+                w.find('p').text(t.attr(dataMessage));
+                w.zIndex(1070);
+                w.fadeIn(60);
+            }
+        });
+        inputs.on('blur', function () {
+            let t = $(this);
+            if (t.hasClass(inputErrorClass)) {
+                let wId = 'warning' + t.attr('id');
+                let w = $('#' + wId);
+                if (w != undefined) {
+//                    w.fadeOut(60);
+                }
+            }
+        });
+    }
+
+    function startGatherState(id, index) {
+        $.ajax({
+            url: '/eapsimulator/collectDeviceState.form',
+            method: 'POST',
+            data: {
+                idStr: id,
+                indexStr: index
+            },
+            success: function (data) {
+                let res = JSON.parse(data.toString());
+                let tableData = $('#deviceTable').bootstrapTable('getData', true);
+                if (res.result == "OK") {
+                    for (let i in res.data) {
+                        let index = res.data[i].index;
+                        let id = res.data[i].id;
+                        let state = res.data[i].state;
+                        if (tableData[i].id == id) {
+                            $('#deviceTable').bootstrapTable('updateCell', {
+                                index: index,
+                                field: 'state',
+                                value: state
+                            });
+                        } else {
+                            for (let j in tableData) {
+                                if (tableData[j].id == id) {
+                                    $('#deviceTable').bootstrapTable('updateCell', {
+                                        index: tableData[j].index,
+                                        field: 'state',
+                                        value: state
+                                    });
+                                }
+                            }
+                        }
+                    }
+
+                } else if (res.result == 'fail') {
+                    // TODO: handle
+                }
+            },
+            error: function (data) {
+                //TODO: handle error
+            }
+        })
+    }
+
+    function startGatherRunning() {
+        $.ajax({
+            url: '/eapsimulator/collectRunningNum.form',
+            method: 'POST',
+            success: function (data) {
+                let res = JSON.parse(data.toString());
+                if (res.result == "OK") {
+                    $('#runningP').text('Running : ' + res.data.num);
+                }
+            }
+
+        })
+    }
+
+    function init() {
+        initNavbar();
+        initDeviceTable();
+        initLogTable();
+        refreshSetting();
+        addInputListeners();
+        $('.btn-group').on('click', 'a', function () {
+            $(this).siblings().removeClass('active').end().addClass('active');
+        });
+        $(document).click(function (event) {
+            let classes = event.target.classList;
+            if (!(classes.contains('caret') || classes.contains('dropdown-toggle'))) {
+                $('.btn-group').removeClass('open');
+            }
+        });
+        setInterval(startGatherRunning, 5000);
+//        setInterval(startGatherState, 10000);
+    }
+
+    init();
+</script>
+
+</html>

@@ -1,0 +1,171 @@
+div.modal-body-show {
+    z-index: 0;
+}
+
+div.modal-body-fade {
+    z-index: 1000;
+}
+
+.navbar-right > li > p {
+    color: #34495e;
+    padding: 15px 21px 15px 21px;
+    margin: 0;
+    font-size: 16px;
+    line-height: 23px;
+}
+
+.warning-blog > .message > p {
+    font-size: 12px;
+    margin: 2px;
+}
+
+.warning-blog > .message {
+    padding: 4px;
+    border-radius: 5px;
+    background-color: #DCDCDC;
+    border: 1px;
+
+}
+
+.warning-blog > .caret {
+    margin-right: 12px;
+    display: block;
+    color: #DCDCDC;
+    float: right;
+}
+
+.warning-blog {
+    width: fit-content;
+    float: right;
+    position: relative;
+
+}
+
+.input-error:focus {
+    border-color: #e74c3c;
+}
+
+.container-fade {
+    display: none;
+}
+
+.container-active {
+    margin-top: 55px;
+    display: block;
+}
+
+.navbar-nav-link {
+}
+
+.input-element {
+    margin: 2px;
+}
+
+.input-element > label {
+    margin-top: 5px;
+}
+
+.container-setting {
+    padding-top: 6px;
+    padding-bottom: 64px;
+}
+
+.setting-title {
+    float: left;
+    margin: -0.5em 20px 0;
+    width: 20%;
+}
+
+.setting-content {
+    float: left;
+    margin-left: 20px;
+    width: 70%;
+}
+
+.setting-content > div > label {
+    width: 30%;
+}
+
+.setting-content > div > input {
+    width: 30%;
+}
+
+.setting-footer {
+    width: inherit;
+    position: fixed;
+    bottom: 0;
+}
+
+.form-inline {
+    display: inline;
+}
+
+@media (max-width: 760px) {
+    .setting-title {
+        float: none;
+        margin: 0 0 18px !important;
+        padding: 0 !important;
+        width: 540px;
+    }
+
+    .setting-content {
+        float: none;
+        margin: 0 0 18px !important;
+        padding: 0 !important;
+        width: 540px;
+    }
+
+    .setting-footer {
+        width: 540px;
+    }
+}
+
+.bootstrap-table > .fixed-table-container {
+    min-height: 720px;
+}
+
+.bootstrap-table > .fixed-table-container > .fixed-table-body {
+    height: 677px;
+}
+
+.full-log {
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    min-height: 620px;
+    width: inherit;
+    min-width: 570px;
+    max-width: 570px;
+    word-wrap: normal;
+    overflow-x: auto;
+    overflow-y: auto;
+    resize: none;
+    word-break: break-all;
+}
+
+.input-sub > label {
+    clear: both;
+}
+
+.input-sub > div > input {
+    width: 45%;
+}
+
+.dropdown-menu {
+    left: -60px;
+}
+
+.btn-group {
+    width: 104px;
+}
+
+.dropdown-menu {
+    min-width: 164px;
+}
+
+.table {
+    font-size: 16px;
+}
+
+.form-control[disabled] {
+    color: #34495e;
+}
