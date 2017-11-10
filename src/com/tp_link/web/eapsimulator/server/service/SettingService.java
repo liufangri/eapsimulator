@@ -20,6 +20,7 @@ public class SettingService {
     private static final Log logger = LogFactory.getLog(SettingService.class);
     private Properties settingProperties;
     private String settingPath;
+    private EapLogService eapLogService;
 
     public Properties getSettingProperties() {
         return settingProperties;
@@ -27,6 +28,10 @@ public class SettingService {
 
     public void setSettingProperties(Properties settingProperties) {
         this.settingProperties = settingProperties;
+    }
+
+    public void setEapLogService(EapLogService eapLogService) {
+        this.eapLogService = eapLogService;
     }
 
     public void setSettingPath(String settingPath) {
@@ -38,6 +43,17 @@ public class SettingService {
                 String path = getRealPath(settingPath);
                 settingProperties.load(new FileInputStream(path));
                 this.settingPath = settingProperties.getProperty("setting.path");
+            } catch (IOException e) {
+                logger.error(e.getMessage());
+            }
+        }
+    }
+
+    public void refreshSettings() {
+        if (settingPath != null) {
+            try {
+                String path = getRealPath(settingPath);
+                settingProperties.load(new FileInputStream(path));
             } catch (IOException e) {
                 logger.error(e.getMessage());
             }
@@ -115,10 +131,16 @@ public class SettingService {
         try {
             FileOutputStream out = new FileOutputStream(path);
             settingProperties.store(out, "");
+            eapLogService.refreshLogSetting();
+            out.close();
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
         return "{\"result\":\"OK\"}";
+    }
+
+    public String getSettingByName(String key) {
+        return settingProperties.getProperty(key);
     }
 
     public static class UnresolvablePathPrefix extends RuntimeException {

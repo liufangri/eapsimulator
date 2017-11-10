@@ -268,9 +268,14 @@
     </div>
     <!-- 查看内容模态框 -->
 
+    <div id="logToolBar">
+        <span>记录日志</span>
+        <input style="display: inline-block; top: 4px;" id="logState" type="checkbox" class="checkbox">
+    </div>
+
     <table id="logTable" data-classes="table table-hover" data-show-pagination-switch="false" data-page-size="25"
            data-pagination="true" data-show-refresh="true" data-page-list="[25, 50, 100]"
-           class="table" data-show-footer="false" data-height="720"></table>
+           class="table" data-show-footer="false" data-height="720" data-toolbar="#logToolBar"></table>
 </div>
 <!-- 日志 -->
 
@@ -1141,12 +1146,26 @@
                 settings["base.ip.end"] = res['base.ip.end'];
                 settings["base.mac.start"] = res['base.mac.start'];
                 settings["base.mac.end"] = res['base.mac.end'];
+                settings["eap.netlog.active"] = res['eap.netlog.active'];
+                let logRadio = $('#logState');
+                logRadio.attr('checked', settings["eap.netlog.active"]);
+                logRadio.on('click', function () {
+                    let state = logRadio.is(':checked');
+                    $.ajax({
+                        url: '/eapsimulator/storeSettings.form',
+                        data: {
+                            "eap.netlog.active": state
+                        }
+                    })
+
+                })
             },
             error: (data) => {
                 //TODO: Handle error
             }
         });
     }
+
 
     function sleep0(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
@@ -1356,8 +1375,8 @@
                 $('.btn-group').removeClass('open');
             }
         });
+        startGatherRunning();
         setInterval(startGatherRunning, 5000);
-//        setInterval(startGatherState, 10000);
     }
 
     init();

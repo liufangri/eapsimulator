@@ -15,45 +15,56 @@ import com.tp_link.web.eapsimulator.tools.GsonHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.LinkedHashMap;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class EapLogService implements NetLog {
     private static final Log logger = LogFactory.getLog(EapLogService.class);
+    private boolean logActive = false;
+    private SettingService settingService;
     private EapLogDao eapLogDao;
+    private ConcurrentLinkedQueue<EapLog> logQueue = new ConcurrentLinkedQueue<>();
+    private LogSaveTask logSaveTask = new LogSaveTask();
+    private Thread logSaveThread;
 
+    public void setSettingService(SettingService settingService) {
+        this.settingService = settingService;
+    }
 
     public void setEapLogDao(EapLogDao eapLogDao) {
         this.eapLogDao = eapLogDao;
     }
 
+    @PostConstruct
+    public void initLogSetting() {
+        logSaveThread = new Thread(logSaveTask);
+        logSaveThread.setName("EAP-log-save");
+        logSaveThread.start();
+        logActive = Boolean.parseBoolean(settingService.getSettingByName("eap.netlog.active"));
+    }
+
     @Override
     public NetLog log(VirtualEap virtualEap, String comment, String action, int type,
                       String sourceAddress, int sourcePort, String destAddress, int destPort) {
-        EapLog log = new EapLog();
-        log.setComment(comment);
-        log.setAction(action);
-        log.setEapId(virtualEap.getId());
-        log.setSourceAddress(sourceAddress);
-        log.setSourcePort(sourcePort);
-        log.setDestAddress(destAddress);
-        log.setDestPort(destPort);
-        log.setId(UUID.randomUUID().toString());
-        log.setCreateTime(System.currentTimeMillis());
-        log.setEapMac(virtualEap.getMac());
-        log.setType(type);
-
-//        Thread thread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                eapLogDao.saveLog(log);
-//            }
-//        });
-//        thread.setName("Log_save");
-        eapLogDao.saveLog(log);
+        if (logActive) {
+            EapLog log = new EapLog();
+            log.setComment(comment);
+            log.setAction(action);
+            log.setEapId(virtualEap.getId());
+            log.setSourceAddress(sourceAddress);
+            log.setSourcePort(sourcePort);
+            log.setDestAddress(destAddress);
+            log.setDestPort(destPort);
+            log.setId(UUID.randomUUID().toString());
+            log.setCreateTime(System.currentTimeMillis());
+            log.setEapMac(virtualEap.getMac());
+            log.setType(type);
+            logQueue.add(log);
+            logger.debug("Added log into log queue.");
+        }
         return this;
     }
 
@@ -78,27 +89,31 @@ public class EapLogService implements NetLog {
         PagedResult<EapLog> result = eapLogDao.getLogPageByDeviceId(limit, offset, deviceId);
         return GsonHelper.getGson().toJson(result);
     }
-//
-//    public static class LogQueue {
-//        public static final int QUEUE_LIMIT = 1000;
-//        private EapLog[] logQueue = new EapLog[QUEUE_LIMIT];
-//        private int current = 0;
-//        private int read = current;
-//
-//        public synchronized void addEapLog(EapLog log) {
-//            current++;
-//            if (current == QUEUE_LIMIT) {
-//                current = 0;
-//            }
-//            while (current == read) {
-//                try {
-//                    wait(100);
-//                } catch (InterruptedException e) {
-//
-//                }
-//            }
-//
-//        }
-//
-//    }
+
+    public void refreshLogSetting() {
+        logActive = Boolean.parseBoolean(settingService.getSettingByName("eap.netlog.active"));
+    }
+
+    private class LogSaveTask implements Runnable {
+        @Override
+        public void run() {
+            while (true) {
+                EapLog eapLog = logQueue.poll();
+                if (eapLog != null) {
+                    eapLogDao.saveLog(eapLog);
+                } else {
+                    try {
+                        Thread.sleep(40);
+                    } catch (InterruptedException e) {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    @PreDestroy
+    public void stop() {
+        logSaveThread.interrupt();
+    }
 }
