@@ -167,7 +167,7 @@ public class EapManageHandler extends SimpleChannelInboundHandler<byte[]> {
             // A pre set.
             virtualEap.setUserName(((Map<String, String>) body.get("userAccount")).get("newUsername"));
             virtualEap.setPasswordMD5(((Map<String, String>) body.get("userAccount")).get("newPassword"));
-        } else if (configVersion == 1) {
+        } else {
             virtualEap.setCurrentState(VirtualEap.State.CONFIGURING);
             //TODO: handle config.
             // Get sequenceId
