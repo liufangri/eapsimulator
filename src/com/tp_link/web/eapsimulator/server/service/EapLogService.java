@@ -17,6 +17,8 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -41,7 +43,7 @@ public class EapLogService implements NetLog {
     @PostConstruct
     public void initLogSetting() {
         logSaveThread = new Thread(logSaveTask);
-        logSaveThread.setName("EAP-log-save");
+        logSaveThread.setName("EAP-Log");
         logSaveThread.start();
         logActive = Boolean.parseBoolean(settingService.getSettingByName("eap.netlog.active"));
     }
@@ -95,19 +97,46 @@ public class EapLogService implements NetLog {
     }
 
     private class LogSaveTask implements Runnable {
+        List<EapLog> logs = new LinkedList<>();
+
         @Override
         public void run() {
             while (true) {
-                EapLog eapLog = logQueue.poll();
-                if (eapLog != null) {
-                    eapLogDao.saveLog(eapLog);
-                } else {
+                int currentSize = logQueue.size();
+                if (currentSize >= 50) {
+                    for (int i = 0; i < 50; i++) {
+                        logs.add(logQueue.poll());
+                    }
                     try {
-                        Thread.sleep(40);
-                    } catch (InterruptedException e) {
-                        break;
+                        eapLogDao.saveLog(logs);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        logger.error(e.getMessage());
+                    }
+                    logs.clear();
+                } else {
+                    EapLog eapLog = logQueue.poll();
+                    if (eapLog != null) {
+                        try {
+                            eapLogDao.saveLog(eapLog);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            logger.error(e.getMessage());
+                        }
+                    } else {
+                        try {
+                            Thread.sleep(40);
+                        } catch (InterruptedException e) {
+                            logger.debug("Log thread interrupted!");
+                            break;
+                        }
                     }
                 }
+                if (Thread.currentThread().isInterrupted()) {
+                    logger.debug("Log thread interrupted!");
+                    break;
+                }
+
             }
         }
     }

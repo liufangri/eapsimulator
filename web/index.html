@@ -1146,9 +1146,13 @@
                 settings["base.ip.end"] = res['base.ip.end'];
                 settings["base.mac.start"] = res['base.mac.start'];
                 settings["base.mac.end"] = res['base.mac.end'];
-                settings["eap.netlog.active"] = res['eap.netlog.active'];
+                settings["eap.netlog.active"] = res['eap.netlog.active'] == 'true';
                 let logRadio = $('#logState');
-                logRadio.attr('checked', settings["eap.netlog.active"]);
+                if (settings["eap.netlog.active"]) {
+                    logRadio.attr('checked', 'checked');
+                } else {
+                    logRadio.removeAttr('checked');
+                }
                 logRadio.on('click', function () {
                     let state = logRadio.is(':checked');
                     $.ajax({

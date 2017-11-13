@@ -43,7 +43,6 @@ public class EapDiscoveryClient extends EapClient {
     private int port;
 
 
-
     private Thread broadcastThread;
     private BroadcastRunnable broadcastRunnable = new BroadcastRunnable();
 
@@ -112,10 +111,9 @@ public class EapDiscoveryClient extends EapClient {
     /**
      * Broadcast Discovery datagram to port 29810.
      */
-    public void broadcastDiscoveryDatagram(VirtualEap virtualEap, boolean writeLog) {
-        DataHeader header = new DataHeader();
-        DataBody body = new DataBody();
-        Packet packet = new Packet(header, body);
+    public void broadcastDiscoveryDatagram(DataHeader header, DataBody body, Packet packet,
+                                           VirtualEap virtualEap, boolean writeLog) {
+
         refreshHeadAndBody(header, body, virtualEap);
         String json = GsonHelper.getGson().toJson(packet.getData());
         DatagramPacket datagram = sendDiscovery(json);
@@ -228,21 +226,28 @@ public class EapDiscoveryClient extends EapClient {
     @Override
     public void addEap(VirtualEap eap) {
         super.addEap(eap);
-        broadcastDiscoveryDatagram(eap, true);
+        DataHeader header = new DataHeader();
+        DataBody body = new DataBody();
+        Packet packet = new Packet(header, body);
+        broadcastDiscoveryDatagram(header, body, packet, eap, true);
     }
 
     class BroadcastRunnable implements Runnable {
+        DataHeader header = new DataHeader();
+        DataBody body = new DataBody();
+        Packet packet = new Packet(header, body);
+
         @Override
         public void run() {
             while (!stopped) {
                 for (Map.Entry<String, VirtualEap> entry : eapMap.entrySet()) {
                     VirtualEap virtualEap = entry.getValue();
                     if (virtualEap != null) {
-                        broadcastDiscoveryDatagram(virtualEap, false);
+                        broadcastDiscoveryDatagram(header, body, packet, virtualEap, false);
                         if (stopped) {
                             break;
                         }
-                    }else{
+                    } else {
                         logger.debug("Broadcast EAP is null.");
                     }
                 }

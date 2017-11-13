@@ -50,7 +50,7 @@ public class EapDevice {
     @Column(name = "EAP_PASSWORD_MD5")
     private String passwordMD5;
 
-    @Column(name = "EAP_RC4_KEY")
+    @Transient
     private String rc4Key;
 
     @Transient

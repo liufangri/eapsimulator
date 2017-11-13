@@ -97,12 +97,10 @@ public class EapDeviceManager {
                     if (virtualEap != null) {
                         eapMain = new EapMain(virtualEap, eapNetContext);
                         eapMainMap.put(virtualEap.getId(), eapMain);
-                        virtualEap.setCurrentState(VirtualEap.State.INIT);
                         startEapMainThread(eapMain);
                     }
                 } else if (eapMain != null) {
                     if (!eapMain.isRunning()) {
-                        eapMain.getVirtualEap().setCurrentState(VirtualEap.State.INIT);
                         startEapMainThread(eapMain);
                     }
                 }

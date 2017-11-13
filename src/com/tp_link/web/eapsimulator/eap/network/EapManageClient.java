@@ -208,10 +208,9 @@ public class EapManageClient extends EapClient {
         removeEap(virtualEap);
     }
 
-    public void sendInformRequest(VirtualEap virtualEap, boolean writeLog) {
-        DataHeader header = new DataHeader();
-        DataBody body = new DataBody();
-        Packet packet = new Packet(header, body);
+    public void sendInformRequest(DataHeader header, DataBody body, Packet packet,
+                                  VirtualEap virtualEap, boolean writeLog) {
+
         Channel channel = channelMap.get(virtualEap.getMac());
         if (channel == null) {
             logger.error("EAP - " + virtualEap.getMac() + " channel is null");
@@ -394,13 +393,17 @@ public class EapManageClient extends EapClient {
     }
 
     class SendInformRequestRunnable implements Runnable {
+        DataHeader header = new DataHeader();
+        DataBody body = new DataBody();
+        Packet packet = new Packet(header, body);
+
         @Override
         public void run() {
             while (!stopped) {
                 for (Map.Entry<String, VirtualEap> entry : eapMap.entrySet()) {
                     VirtualEap virtualEap = entry.getValue();
                     try {
-                        EapManageClient.this.sendInformRequest(virtualEap, false);
+                        EapManageClient.this.sendInformRequest(header, body, packet, virtualEap, false);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

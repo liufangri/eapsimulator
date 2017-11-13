@@ -12,7 +12,9 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.StatelessSession;
 
+import java.sql.Connection;
 import java.util.List;
 
 public class EapLogDao {
@@ -44,6 +46,14 @@ public class EapLogDao {
         Session session = sessionFactory.getCurrentSession();
         session.save(eapLog);
         return 1;
+    }
+
+    public int saveLog(List<EapLog> eapLogs) {
+        Session session = sessionFactory.getCurrentSession();
+        for (EapLog log : eapLogs) {
+            session.save(log);
+        }
+        return eapLogs.size();
     }
 
     public int deleteLogById(String id) {

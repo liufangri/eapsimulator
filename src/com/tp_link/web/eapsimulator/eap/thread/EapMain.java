@@ -9,6 +9,9 @@ package com.tp_link.web.eapsimulator.eap.thread;
 import com.tp_link.web.eapsimulator.eap.VirtualEap;
 import com.tp_link.web.eapsimulator.eap.network.EapNetContext;
 import com.tp_link.web.eapsimulator.eap.network.log.NetLog;
+import com.tp_link.web.eapsimulator.eap.network.protocol.DataBody;
+import com.tp_link.web.eapsimulator.eap.network.protocol.DataHeader;
+import com.tp_link.web.eapsimulator.eap.network.protocol.Packet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -38,7 +41,7 @@ public class EapMain implements Runnable {
     public void run() {
         terminated = false;
         netContext.addVirtualEap(virtualEap);
-
+        virtualEap.setCurrentState(VirtualEap.State.INIT);
         while (!terminated) {
             switch (virtualEap.getCurrentState()) {
                 case INIT:
@@ -87,11 +90,14 @@ public class EapMain implements Runnable {
                 case PROVISIONING:
                     try {
                         logger.debug("Adoption of " + virtualEap.getId().substring(0, 8) + " FINISHED!");
-                        Thread.sleep(10000);
+                        Thread.sleep(2000);
                         if (netContext.openManageChannel(virtualEap)) {
                             netContext.getManageClient().sendPreConnectInformation(virtualEap);
                             Thread.sleep(1000);
-                            netContext.getManageClient().sendInformRequest(virtualEap, true);
+                            DataHeader header = new DataHeader();
+                            DataBody body = new DataBody();
+                            netContext.getManageClient().sendInformRequest(header, body, new Packet(header, body),
+                                    virtualEap, true);
                             synchronized (virtualEap.lock) {
                                 virtualEap.lock.wait(180000);
                                 if (virtualEap.getCurrentState() == VirtualEap.State.PROVISIONING) {
