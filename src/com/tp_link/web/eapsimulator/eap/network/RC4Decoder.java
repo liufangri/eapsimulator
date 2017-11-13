@@ -19,6 +19,10 @@ public class RC4Decoder extends ByteToMessageDecoder {
     boolean data = false;
     int len = 4;
 
+    public RC4Decoder(byte[] key) {
+        this.key = key;
+    }
+
     public void setKey(byte[] key) {
         this.key = key;
     }

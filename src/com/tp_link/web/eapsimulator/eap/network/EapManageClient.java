@@ -89,15 +89,7 @@ public class EapManageClient extends EapClient {
     public void bootstrap() {
         workGroup = new NioEventLoopGroup();
         bootstrap = new Bootstrap();
-
-        bootstrap.group(workGroup)
-                .channel(NioSocketChannel.class)
-                .handler(new ChannelInitializer<SocketChannel>() {
-                    @Override
-                    protected void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(manageHandler);
-                    }
-                });
+        bootstrap.group(workGroup).option(ChannelOption.SO_KEEPALIVE, true).channel(NioSocketChannel.class);
     }
 
     public Channel connect(VirtualEap eap, String destAddress, int destPort) throws InterruptedException {
@@ -112,9 +104,16 @@ public class EapManageClient extends EapClient {
             }
         }
         try {
-            channel = bootstrap.option(ChannelOption.SO_KEEPALIVE, true)
+            channel = bootstrap.handler(new ChannelInitializer<SocketChannel>() {
+                @Override
+                protected void initChannel(SocketChannel ch) throws Exception {
+                    ch.pipeline().addLast(new RC4Decoder(RSAHelper.decryptBASE64(eap.getRc4Key())));
+                    ch.pipeline().addLast(manageHandler);
+                }
+            })
                     .localAddress(eap.getManagePort())
-                    .connect(destAddress, destPort).sync().channel();
+                    .connect(destAddress, destPort)
+                    .sync().channel();
         } catch (Exception e) {
             if (e instanceof InterruptedException) {
                 // Interrupted Unexpected
