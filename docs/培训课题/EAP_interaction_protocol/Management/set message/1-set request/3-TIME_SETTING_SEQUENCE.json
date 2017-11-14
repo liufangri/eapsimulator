@@ -1,0 +1,21 @@
+/*以下body与《EAPConfigBody.json》中对应字段匹配，只列出了使用的字段，未使用(不再列出)的按默认填充*/
+{
+	"timeSetting":
+	{
+		"timeZone":720,					//required,时区,类型:int
+		"date":"yyyy/MM/dd",			//required,日期,类型:int
+		"time":"HH:mm:ss",				//required,时间,类型:string
+		"ntpServer1":"ntpServer1",		//unused,ntp服务器地址,类型:string
+		"ntpServer2":"ntpServer2",		//unused,ntp服务器地址,类型:string
+	
+	},
+	"configVersion":1000, 				//required,配置版本,类型:int
+	"sequenceId":65534, 				//optional,该值随具体设置不同(publishEmptySettingEvent时为null)，类型：int
+	"userAccount":						//optional,用户账号(publishMiniSettingEvent时携带),自定义类型:UserAccountConfig
+	{
+		"curUsername":"admin",			//当前用户名，类型：string
+		"curPassword":"admin",			//当前密码，类型：string
+		"newUsername":"admin1",			//新用户名，类型：string
+		"newPassword":"admin1"			//新密码，类型：string
+	}
+}

@@ -1,0 +1,256 @@
+// 配置日期时间和验证信息，adopt之后每隔一段时间会发送一次。
+{
+  "header" : {
+    "version" : "1.0.0",
+    "mac" : "ea:01:10:08:15:70",
+    "type" : 4096,
+    "error" : 0
+  },
+  "body" : {
+    "userAccount" : {
+      "curUsername" : "admin",
+      "curPassword" : "21232F297A57A5A743894A0E4A801FC3",
+      "newUsername" : "admin",
+      "newPassword" : "21232F297A57A5A743894A0E4A801FC3"
+    },
+    "timeSetting" : {
+      "timeZone" : 300,
+      "date" : "2017/10/25",
+      "time" : "10:35:25"
+    },
+    "sequenceId" : 65534,
+    "configVersion" : 0
+  }
+}
+// 初始配置
+{
+	"body" : {
+		"accessControlRules" : [
+			{
+				"mode" : "block",
+				"operation" : 1,
+				"ruleId" : "59c1ff7dec2e196a9fbde215",
+				"ruleName" : "Default",
+				"subnets" : [
+					{
+						"ipAddr" : "192.168.0.0",
+						"ipMask" : 16
+					},
+					{
+						"ipAddr" : "172.16.0.0",
+						"ipMask" : 12
+					},
+					{
+						"ipAddr" : "10.0.0.0",
+						"ipMask" : 8
+					}
+				]
+			}
+		],
+		"bindVlan" : {
+			"localVlanEnable" : "off",
+			"localVlanId" : 1
+		},
+		"configVersion" : 1,
+		"lanSetting" : {
+			"connType" : 1,
+			"fallBackIp" : "192.168.0.254",
+			"fallBackMask" : "255.255.255.0",
+			"fallbackGateway" : "",
+			"useFallBack" : true
+		},
+		"led" : {
+			"enable" : "on"
+		},
+		"limits_2G" : [
+			{
+				"downLimit" : 0,
+				"enable" : false,
+				"id" : 1,
+				"radioId" : 0,
+				"ssidName" : "EAP",
+				"upLimit" : 0
+			}
+		],
+		"loadBalance_2G" : {
+			"enable" : false,
+			"maxAssocClient" : 1,
+			"radioId" : 0
+		},
+		"logSetting" : {
+			"mailEnable" : false,
+			"nvramEnable" : false
+		},
+		"macFilterAssoc" : {
+			"rule" : [
+				{
+					"action" : 0,
+					"band" : 0,
+					"ssid" : "EAP"
+				},
+				{
+					"action" : 0,
+					"band" : 1,
+					"ssid" : "EAP"
+				}
+			]
+		},
+		"macFilterGlobal" : {
+			"enable" : false
+		},
+		"managementVlan" : {
+			"managementVlanEnable" : "off",
+			"managementVlanId" : 1
+		},
+		"qosConfig_2G" : {
+			"apBeAifs" : 3,
+			"apBeCwMax" : 63,
+			"apBeCwMin" : 15,
+			"apBeMaxBurst" : 0,
+			"apBkAifs" : 7,
+			"apBkCwMax" : 1023,
+			"apBkCwMin" : 15,
+			"apBkMaxBurst" : 0,
+			"apViAifs" : 1,
+			"apViCwMax" : 15,
+			"apViCwMin" : 7,
+			"apViMaxBurst" : 3008,
+			"apVoAifs" : 1,
+			"apVoCwMax" : 7,
+			"apVoCwMin" : 3,
+			"apVoMaxBurst" : 1504,
+			"noAckEnable" : false,
+			"radioId" : 0,
+			"staBeAifs" : 3,
+			"staBeCwMax" : 1023,
+			"staBeCwMin" : 15,
+			"staBeTxopLimit" : 0,
+			"staBkAifs" : 7,
+			"staBkCwMax" : 1023,
+			"staBkCwMin" : 15,
+			"staBkTxopLimit" : 0,
+			"staViAifs" : 2,
+			"staViCwMax" : 15,
+			"staViCwMin" : 7,
+			"staViTxopLimit" : 3008,
+			"staVoAifs" : 2,
+			"staVoCwMax" : 7,
+			"staVoCwMin" : 3,
+			"staVoTxopLimit" : 1504,
+			"uapsdEnable" : true,
+			"wmmEnable" : true
+		},
+		"region" : 841,
+		"rogueApGlobal" : {
+			"enable" : false
+		},
+		"rssi_2G" : {
+			"enable" : false,
+			"threshold" : 0
+		},
+		"schedulerAssoc" : {
+			"rule" : [
+				{
+					"action" : 0,
+					"band" : 0,
+					"ssid" : "EAP"
+				},
+				{
+					"action" : 0,
+					"band" : 1,
+					"ssid" : "EAP"
+				}
+			]
+		},
+		"schedulerAssocAp" : {
+			"rule" : [
+				{
+					"action" : 0,
+					"mac" : "EA:01:01:00:00:0E"
+				}
+			]
+		},
+		"schedulerGlobal" : {
+			"enable" : false,
+			"mode" : 0
+		},
+		"sequenceId" : 65533,
+		"ssh" : {
+			"sshenable" : "off",
+			"sshserverPort" : 22
+		},
+		"ssid_2G" : {
+			"radioId" : 0,
+			"ssid" : [
+				{
+					"accessControlRule" : "None",
+					"accessControlRuleName" : "None",
+					"id" : 1,
+					"operation" : 1,
+					"portal" : false,
+					"pskCipher" : 3,
+					"pskKey" : "12345678",
+					"pskKeyUpdate" : 0,
+					"pskVer" : 2,
+					"securityMode" : 3,
+					"ssidBcast" : true,
+					"ssidIsolation" : false,
+					"ssidName" : "EAP",
+					"vlanId" : 0
+				}
+			]
+		},
+		"timeSetting" : {
+			"date" : "2017/10/25",
+			"time" : "05:20:34",
+			"timeZone" : 300
+		},
+		"wirelessAdv_2G" : {
+			"airtimeFairness" : false,
+			"bRate_1" : 0,
+			"bRate_11" : 0,
+			"bRate_12" : 0,
+			"bRate_18" : 0,
+			"bRate_2" : 0,
+			"bRate_24" : 0,
+			"bRate_36" : 0,
+			"bRate_48" : 0,
+			"bRate_5" : 0,
+			"bRate_54" : 0,
+			"bRate_6" : 0,
+			"bRate_9" : 0,
+			"beaconInterval" : 100,
+			"dtimPeriod" : 1,
+			"fragThreshold" : 2346,
+			"mcsIndex" : 0,
+			"radioId" : 0,
+			"rate_1" : 0,
+			"rate_11" : 0,
+			"rate_12" : 0,
+			"rate_18" : 0,
+			"rate_2" : 0,
+			"rate_24" : 0,
+			"rate_36" : 0,
+			"rate_48" : 0,
+			"rate_5" : 0,
+			"rate_54" : 0,
+			"rate_6" : 0,
+			"rate_9" : 0,
+			"rtsThreshold" : 2347
+		},
+		"wirelessBasic_2G" : {
+			"chanWidth" : 4,
+			"channel" : 0,
+			"radioEnable" : true,
+			"radioId" : 0,
+			"txPower" : 26,
+			"wirelessMode" : 4
+		}
+	},
+	"header" : {
+		"error" : 0,
+		"mac" : "EA:01:01:00:00:0E",
+		"type" : 4096,
+		"version" : "1.0.0"
+	}
+}

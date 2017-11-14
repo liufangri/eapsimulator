@@ -1,0 +1,2 @@
+	set request根据具体设置（“sequenceId”）的不同，body的有效内容（EapConfigBody）动态变化,其中《EapConfigBody.json》完整列出了set 
+request的body的全集，具体业务的body是这个全集的子集。

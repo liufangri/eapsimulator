@@ -1,0 +1,16 @@
+{
+	"authedUsers":
+	[
+		{
+			"clientMac": "50:c7:bf:75:f7:f0", 	//required,client的mac地址，类型：string
+			"radioId": ,						//required,连接的无线频段（0:2.4G; 1:5G），类型：int
+			"ssid":"eap-ssid",					//required,连接EAP的ssid，类型：string
+			"authedResult":0,					//required,认证结果，类型：int
+			"startTime":15200000,				//required,认证通过开始时间（1970年1月1日零时至今的秒数），类型：long
+			"endTime":15200060,					//required,此次认证结束时间（1970年1月1日零时至今的秒数），类型：long
+			"upLimit":1024,						//required,上传速率限制（单位Kbps,特定认证类型使用），类型：long
+			"downLimit":1024,					//required,下载速率限制（单位Kbps,特定认证类型使用），类型：long
+			"dataUsageLimit":512				//required,上传加下载数据总和限制（单位MB,特定认证类型使用），类型：long
+		}
+	]
+}

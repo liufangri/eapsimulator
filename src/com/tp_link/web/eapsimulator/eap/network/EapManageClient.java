@@ -107,7 +107,7 @@ public class EapManageClient extends EapClient {
             channel = bootstrap.handler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
-                    ch.pipeline().addLast(new RC4Decoder(RSAHelper.decryptBASE64(eap.getRc4Key())));
+//                    ch.pipeline().addLast(new RC4Decoder(RSAHelper.decryptBASE64(eap.getRc4Key())));
                     ch.pipeline().addLast(manageHandler);
                 }
             })
@@ -227,7 +227,6 @@ public class EapManageClient extends EapClient {
         int length = bytes.length;
         byte[] lengthBytes = new byte[4];
         TypeConvert.intToBytes(length, lengthBytes, 0);
-
 
         if (channel.isWritable()) {
             if (length > CAPABILITY) { // Divide packet.

@@ -1,0 +1,10 @@
+{
+	"queryInfos":
+	[
+		{
+			"clientMac": "50:c7:bf:75:f7:f0", 	//required,client的mac地址，类型：string
+			"radioId": ,						//required,连接的无线频段（0:2.4G; 1:5G），类型：int
+			"ssid":"eap-ssid"					//required,连接EAP的ssid，类型：string
+		}
+	]
+}

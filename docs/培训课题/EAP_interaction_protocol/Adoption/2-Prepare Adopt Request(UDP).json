@@ -1,0 +1,8 @@
+﻿{
+	"deviceInfo":
+	{
+		"mac":"EAP-120",		//required,要adopt的EAP的mac地址,类型：string
+		"ip":"EAP-120",			//required,Controller的ip地址,类型：string
+		"port":	29812			//unused, ADOPT服务器端口(TCP),类型：int
+	}
+}

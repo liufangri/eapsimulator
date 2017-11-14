@@ -1,0 +1,25 @@
+{
+	"deviceInfo":
+	{
+		"model":"EAP-120",			//required,型号,类型：string
+		"name":"EAP-120",			//optional,名称,类型：string
+		"firmwareVersion":"1.0.0",	//required,软件版本,类型：string
+		"upTime": "0 days 13:23:37",//required,运行时间,类型：string	            
+		"ip":"192.168.1.102",		//required,IP地址,类型：string
+		"modelVersion":"1.0",		//required,型号版本,类型：string
+		"hardwareVersion":"1.0"		//required,硬件版本,类型：string
+	},
+	/*"deviceMisc"对象是可选的*/
+	"deviceMisc": //optional
+	{
+		"support_5g":true, 			//是否支持5G信号，类型：bool
+		"support_11ac":true, 		//是否支持11ac标准，类型：bool
+		"support_lag":false, 		//TODO:？？?，类型：bool
+		"customizeRegion": 276,		//地区，类型：int
+		"minPower2G":10,			//2G信号最小功率，类型：int
+		"maxPower2G":19,			//2G信号最大功率，类型：int
+		"minPower5G":11,			//5G信号最小功率，类型：int
+		"maxPower5G":23				//5G信号最大功率，类型：int
+	}
+}
+

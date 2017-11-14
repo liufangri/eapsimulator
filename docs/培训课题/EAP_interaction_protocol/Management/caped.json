@@ -1,0 +1,100 @@
+// {
+// 	"header":	{
+// 		"version":	"TP-LINK ECS ver 1.0.0",
+// 		"mac":	"ea:01:10:08:15:70",
+// 		"type":	8192,
+// 		"error":	0
+// 	},
+// 	"body":	{
+// 		"sequenceId":	65533,
+// 		"errcode":	0
+// 	}
+// }
+
+{
+	"header":	{
+		"version":	"TP-LINK ECS ver 1.0.0",
+		"mac":	"ea:01:10:08:15:70",
+		"type":	256,
+		"error":	0
+	},
+	"body":	{
+		"deviceInfo":	{
+			"model":	"EAP115",
+			"name":	"EAP115-ea-01-10-08-15-70",
+			"firmwareVersion":	"1.2.0 Build 20170111 Rel. 55263",
+			"upTime":	"0 days 17:41:45",
+			"cpuUti":	1,
+			"memUti":	71,
+			"ip":	"192.168.1.14"
+		},
+		"clients":	[],
+		"portalAuthClients":	[],
+		"radioTraffic_2G":	{
+			"rxPackets":	7992988,
+			"txPackets":	1494726,
+			"rxBytes":	1154196384,
+			"txBytes":	23862734,
+			"rxDroppedPackets":	0,
+			"txDroppedPackets":	561,
+			"rxDroppedBytes":	0,
+			"txDroppedBytes":	0,
+			"rxErrors":	0,
+			"txErrors":	2473
+		},
+		"wSettings_2G":	{
+			"region":	841,
+			"channel":	"3   / 2422MHz",
+			"bandWidth":	"20/40MHz",
+			"rdMode":	"b/g/n mixed",
+			"txRate":	"300.0Mbps",
+			"txPower":	"26dBm"
+		},
+		"ssidStats_2G":	[{
+				"id":	1,
+				"ssidName":	"EAP",
+				"clientNum":	0,
+				"downBytes":	0,
+				"upBytes":	0
+			}],
+		"lanTraffic":	{
+			"rxPackets":	193295,
+			"txPackets":	18280,
+			"rxBytes":	79636702,
+			"txBytes":	8632948,
+			"rxDroppedPackets":	2,
+			"txDroppedPackets":	0,
+			"rxDroppedBytes":	0,
+			"txDroppedBytes":	0,
+			"rxErrors":	0,
+			"txErrors":	0
+		},
+		"systemLog":	[],
+		"authedUsers":	[],
+		"rogueApList":	[],
+		"trustApList":	[]
+	}
+}
+{
+	"header" : {
+	  "version" : "1.0.0",
+	  "mac" : "ea:01:10:08:15:70",
+	  "type" : 4096,
+	  "error" : 0
+	},
+	"body" : {
+	  "userAccount" : {
+		"curUsername" : "admin",
+		"curPassword" : "21232F297A57A5A743894A0E4A801FC3",
+		"newUsername" : "admin",
+		"newPassword" : "21232F297A57A5A743894A0E4A801FC3"
+	  },
+	  "timeSetting" : {
+		"timeZone" : 300,
+		"date" : "2017/10/18",
+		"time" : "18:36:53"
+	  },
+	  "sequenceId" : 65534,
+	  "configVersion" : 0
+	}
+  }

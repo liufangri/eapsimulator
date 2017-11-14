@@ -1,0 +1,638 @@
+{
+	"lanSetting": //类型:LanSetting
+	{
+		"connType":1, 						//连接类型(0:static;1:dhcp),类型:int
+		"ipAddr":"192.168.1.254", 			//static模式下ip地址,类型:string
+		"netMask":"255.255.255.0",			//static模式下子网掩码,类型:string
+		"gateway":"192.168.1.1",			//static模式下网关,类型:string
+		"useFallBack":true,					//dhcp模式下是否开启可靠IP,类型:bool
+		"fallBackIp":"192.168.0.254",		//dhcp模式下ip地址,类型:string
+		"fallBackMask":"255.255.255.0", 	//dhcp模式下子网掩码,类型:string
+		"fallbackGateway":"192.168.0.1", 	//dhcp模式下网关,类型:string
+		"preferredDNS":"192.168.1.1",		//static模式下首选dns server,类型:string
+		"alternateDNS":"192.168.1.2"		//static模式下备选dns server,类型:string
+	},
+	
+	"bindVlan":	//类型:BindVlanConfig
+	{
+		"localVlanEnable":"on",				//是否开启vlan功能("on" or "off"),类型:string
+		"localVlanId":4093					//vlanId,类型:int
+	},
+
+	"wirelessBasic_2G": //类型:WirelessBasicConfig
+	{
+		"radioId":0, 						//频段类型(0:2.4G; 1:5G),类型:int
+		"radioEnable":true,					//打开当前频段,类型:bool
+		/*wirelessMode表示无线模式,可选值如下:
+		    WIRELESS11N_ONLY         = 2;
+			WIRELESS11BGN_MIXED      = 4;
+			WIRELESS11AN_MIXED       = 7;
+			WIRELESS11AC_ONLY		 = 8;
+			WIRELESS11NAC_MIXED		 = 9;
+			WIRELESS11ANAC_MIXED     = 10;
+		*/
+		"wirelessMode":2,					//无线模式,类型:int
+		
+		/*chanWidth表示频段带宽，可选值如下:        
+			RADIO_20 		= 2;
+			RADIO_40 		= 3;
+			RADIO_40_20 	= 4;
+			RADIO_80 		= 5;
+			RADIO_80_40_20 	= 6;
+		*/
+		"chanWidth":2,						//频段带宽,类型:int
+		"channel":0,						//无线信道(可选值0-13,0表示auto),类型:int
+		"txPower":19						//传输功率,类型:int
+	}
+
+    "wirelessBasic_5G": //类型:WirelessBasicConfig
+	{
+		"radioId":1, 						//频段类型(0:2.4G; 1:5G),类型:int
+		"radioEnable":true,					//打开当前频段,类型:bool
+		/*wirelessMode表示无线模式,可选值如下:
+		    WIRELESS11N_ONLY         = 2;
+			WIRELESS11BGN_MIXED      = 4;
+			WIRELESS11AN_MIXED       = 7;
+			WIRELESS11AC_ONLY		 = 8;
+			WIRELESS11NAC_MIXED		 = 9;
+			WIRELESS11ANAC_MIXED     = 10;
+		*/
+		"wirelessMode":2,					//无线模式,类型:int
+		
+		/*chanWidth表示频段带宽，可选值如下:        
+			RADIO_20 		= 2;
+			RADIO_40 		= 3;
+			RADIO_40_20 	= 4;
+			RADIO_80 		= 5;
+			RADIO_80_40_20 	= 6;
+		*/
+		"chanWidth":2,						//频段带宽,类型:int
+		"channel":0,						//无线信道(可选值0-4,0表示auto),类型:int
+		"txPower":23						//传输功率,类型:int
+	},
+	
+    "wirelessAdv_2G": //类型:WirelessAdvConfig
+	{
+		"radioId":0,						//频段类型(0:2.4G; 1:5G),类型:int
+		"beaconInterval":,					//TODO:,类型:int
+		"dtimPeriod":,						//TODO:,类型:int
+		"rtsThreshold":,					//TODO:,类型:int		
+		"fragThreshold":,					//TODO:,类型:int
+		"airtimeFairness":,					//TODO:,类型:bool
+		"rate_54":,							//TODO:,类型:int
+		"rate_48":,							//TODO:,类型:int
+		"rate_36":,							//TODO:,类型:int
+		"rate_24":,							//TODO:,类型:int
+		"rate_18":,							//TODO:,类型:int
+		"rate_12":,							//TODO:,类型:int
+		"rate_11":,							//TODO:,类型:int
+		"rate_9":,							//TODO:,类型:int
+		"rate_6":,							//TODO:,类型:int
+		"rate_5":,							//TODO:,类型:int
+		"rate_2":,							//TODO:,类型:int
+		"rate_1":,							//TODO:,类型:int
+		"bRate_54":,						//TODO:,类型:int
+		"bRate_48":,						//TODO:,类型:int
+		"bRate_36":,						//TODO:,类型:int
+		"bRate_24":,						//TODO:,类型:int
+		"bRate_18":,						//TODO:,类型:int
+		"bRate_12":,						//TODO:,类型:int
+		"bRate_11":,						//TODO:,类型:int
+		"bRate_9":,							//TODO:,类型:int
+		"bRate_6":,							//TODO:,类型:int
+		"bRate_5":,							//TODO:,类型:int
+		"bRate_2":,							//TODO:,类型:int
+		"bRate_1":,							//TODO:,类型:int
+		"mcsIndex":							//TODO:,类型:int
+	},
+	
+	"wirelessAdv_5G": //类型:WirelessAdvConfig
+	{
+		"radioId":1,						//频段类型(0:2.4G; 1:5G),类型:int
+		.../*参考"wirelessAdv_2G"的定义*/
+	},
+	
+	"loadBalance_2G": //类型:LoadBalanceConfig
+	{
+		"enable":true,						//是否开启负载均衡,类型:bool
+		"maxAssocClient":32,				//最大关联客户端数量,类型:int
+		"radioId":0							//频段类型(0:2.4G; 1:5G),类型:int
+	},
+	
+    "loadBalance_5G":	//类型:LoadBalanceConfig
+	{
+		"enable":true,						//是否开启负载均衡,类型:bool
+		"maxAssocClient":32,				//最大关联客户端数量,类型:int
+		"radioId":1							//频段类型(0:2.4G; 1:5G),类型:int
+	},
+	
+	"bandSteering":	//类型:BandSteering
+	{
+		"id":null,							//unused,类型:string
+		"enable":true,						//TODO:,类型:bool		
+		"connectionThreshold":5,			//TODO:,类型:int	
+		"differenceThreshold":10,			//TODO:,类型:int	
+		"maxFailures":20,					//TODO:,类型:int	
+		"site":null,						//unused,类型:string
+		"key":null							//unused,类型:string
+	},
+	
+    "accessControlRules":	//类型:AccessControlRule的list
+	[
+		{
+			"ruleId":"",					//TODO:,类型:string	
+			"ruleName":"",					//TODO:,类型:string	
+			"mode":,						//TODO:,类型:string	
+			"operation":,					//TODO:,类型:int	
+			"subnets":						//自定义类型:Subnet的list
+			[
+				{
+					"ipAddr":,					//TODO:,类型:string	
+					"ipMask":,					//TODO:,类型:int	
+				}
+			],
+			"exceptSubnets":						//Subnet的list
+			[
+				{
+					"ipAddr":,					//TODO:,类型:string	
+					"ipMask":,					//TODO:,类型:int	
+				}
+			]
+			"oldRuleName":"rulesname",			//unused,类型:string
+		}
+	],
+	
+	"ssid_2G": 	//类型:SsidConfig
+	{
+		"radioId":0,						//频段类型(0:2.4G; 1:5G),类型:int
+		"ssid":								//SsidC的list
+		[
+			{
+				"id":, 							//TODO:,类型:int
+				"operation":,					//TODO:,类型:int
+				"ssidName":,					//TODO:,类型:string
+				"oldSsidName":,					//TODO:,类型:string
+				"vlanId":,						//TODO:,类型:int
+				"ssidBcast":,					//TODO:,类型:bool
+				"securityMode":,				//TODO:,类型:int
+				"portal":,						//TODO:,类型:bool
+				"authType":,					//TODO:,类型:int
+				"ssidIsolation":,				//TODO:,类型:bool
+				"wepMode":,						//TODO:,类型:int
+				"wepKeyIndex":,					//TODO:,类型:int
+				"wepKeyFormat1":,				//TODO:,类型:int
+				"wepKeyFormat2":,				//TODO:,类型:int
+				"wepKeyFormat3",				//TODO:,类型:int
+				"wepKeyFormat4":,				//TODO:,类型:int
+				"wepKeyType1":,					//TODO:,类型:int
+				"wepKeyType2":,					//TODO:,类型:int
+				"wepKeyType3":,					//TODO:,类型:int
+				"wepKeyType4":,					//TODO:,类型:int
+				"wepKeyValue1":,				//TODO:,类型:string
+				"wepKeyValue2":,				//TODO:,类型:string
+				"wepKeyValue3":,				//TODO:,类型:string
+				"wepKeyValue4":,				//TODO:,类型:string
+				"wpaVer":,						//TODO:,类型:int
+				"wpaCipher":,					//TODO:,类型:int
+				"wpaServer":,					//TODO:,类型:string
+				"wpaPort":,						//TODO:,类型:int
+				"wpaKey":,						//TODO:,类型:string
+				"wpaKeyUpdate":,				//TODO:,类型:int
+				"pskVer":,						//TODO:,类型:int
+				"pskCipher":,					//TODO:,类型:int
+				"pskKey":,						//TODO:,类型:string
+				"pskKeyUpdate":,				//TODO:,类型:int
+				"accessCtrl":,					//TODO:,类型:bool
+				"accessControlRule":,			//TODO:,类型:string
+				"accessControlRuleName":,		//TODO:,类型:string
+				"override":						//TODO:,类型:bool
+			}
+		]
+	},
+	
+    "ssid_5G":	//类型:SsidConfig
+	{
+		"radioId":1,						//频段类型(0:2.4G; 1:5G),类型:int
+		.../*具体定义参看'ssid_2G'中'ssid'的内容*/	
+	},
+	
+    "portalConfigList": //类型：PortalConfig的list
+	[
+		{
+			"authType":0,						//认证类型,类型:int
+			"userName":"",						//TODO:,类型:string
+			"password":"",						//TODO:,类型:string
+			"radiusServer":"192.168.1.102", 	//radius server的ip,类型:string
+			"radiusPort":1812,					//radius server的port,类型:int
+			"radiusPassword":,					//radius server的client(不是user)密码,类型:string
+			"authTimeout":0,					//认证超时类型,类型:int
+			"portalDay":0,						//超时类型为4(custom)时超时时长中的天,类型:int
+			"portalHour":0,						//超时类型为4(custom)时超时时长中的小时,类型:int
+			"portalMin":1,						//超时类型为4(custom)时超时时长中的小分钟,类型:int
+			"redirect":true,					//是否开启认证成功后的重定向,类型:bool
+			"redirectUrl":"http://www.baidu.com",	//认证成功后重定向到该url,类型:string	
+			"authServerType":1,					//radius server时使用的web portal类型(0:local; 1:external),类型:int
+			“httpsRedirectEnable”:true,			//是否支持认证成功后跳转到用户之前访问的url（http是否受此影响？）,类型:bool
+			"extAuthServer":"http://192.168.1.107",//radius server时使用external web portal的url,类型:string
+			"portalTitle":"portal title",		//portal的name,类型:string
+			"portalUseTerm":"",					//TODO:,类型:string
+			"portalAccept":,					//TODO:,类型:bool
+			"externalPortalServer":,			//external web portal的ip,类型:string
+			"ssidList":							//ssid列表,类型:string的list
+			[
+				"ssid-name1",
+				"ssid-name2"
+			]
+		}
+	],
+	
+    "portalFreePolicyConfig":	//类型：PortalFreePolicyConfig
+	{
+		"portalFreePolicy":		//PortalFreePolicy的list
+		[
+			{
+				"id":1,			//policy的id,类型:int
+				"operation":,	//TODO:,类型:int
+				"enable":,		//TODO:,类型:bool
+				"name":,		//TODO:,类型:string
+				"oldName":,		//TODO:,类型:string
+				"srcIp":,		//TODO:,类型:string
+				"srcMask":,		//TODO:,类型:int
+				"dstIp":,		//TODO:,类型:string
+				"dstMask":,		//TODO:,类型:int
+				"srcMac":,		//TODO:,类型:string
+				"dstPort":		//TODO:,类型:int
+			}
+		]
+	},
+	
+    "macFilterGlobal": //类型：MacFilterGlobal
+	{
+		"enable":				//TODO:,类型:bool
+	},
+	
+    "macFilterList": //类型：MacFilterConfig
+	{
+		"rule":	//MacFilterRule的list
+		[
+			{
+				"operation":,		//TODO:,类型:int
+				"ruleId":,			//TODO:,类型:int
+				"mac":,				//TODO:,类型:string
+				"listId":,			//TODO:,类型:int
+				"listName":,		//TODO:,类型:string
+				"oldListName":,		//TODO:,类型:string
+				"oldMac":			//TODO:,类型:string
+			}
+		]
+	},
+	
+	"macFilterAssoc": //类型:MacFilterAssocConfig
+	{
+		"rule": //MacFilterAssocRule的list
+		[
+			{
+				"ssid":,			//TODO:,类型:string
+				"band":,			//TODO:,类型:int
+				"listName":,		//TODO:,类型:string
+				"listId":,			//TODO:,类型:int
+				"action":			//TODO:,类型:int
+			}
+		]
+	},
+	
+    "schedulerGlobal": //类型:SchedulerGlobal
+	{
+		"enable":,					//TODO:,类型:bool
+		"mode":						//TODO:,类型:int
+	},
+	
+    "schedulerList": //类型:SchedulerConfig
+	{
+		"rule":	//SchedulerRule的list
+		[
+			{
+				"operation":,			//TODO:,类型:int
+				"ruleId":,				//TODO:,类型:int
+				"profileId":,			//TODO:,类型:int
+				"profileName":,         //TODO:,type:string
+				"dayOpt":,              //TODO:,type:string
+				"dayMon":,              //TODO:,type:int
+				"dayTue":,              //TODO:,type:int
+				"dayWed":,              //TODO:,type:int
+				"dayThu":,              //TODO:,type:int
+				"dayFri":,              //TODO:,type:int
+				"daySat":,              //TODO:,type:int
+				"daySun":,              //TODO:,type:int
+				"allTime":,             //TODO:,type:int
+				"startHour":,           //TODO:,type:int
+				"startMin":,            //TODO:,type:int
+				"endHour":,             //TODO:,type:int
+				"endMin":,              //TODO:,type:int
+				"oldProfileName":,      //TODO:,type:string
+				"oldDayOpt":,           //TODO:,type:string
+				"oldDayMon":,           //TODO:,type:int
+				"oldDayTue":,           //TODO:,type:int
+				"oldDayWed":,           //TODO:,type:int
+				"oldDayThu":,           //TODO:,type:int
+				"oldDayFri":,           //TODO:,type:int
+				"oldDaySat":,           //TODO:,type:int
+				"oldDaySun":,           //TODO:,type:int
+				"oldAllTime":,          //TODO:,type:int
+				"oldStartHour":,        //TODO:,type:int
+				"oldStartMin":,         //TODO:,type:int
+				"oldEndHour":,          //TODO:,type:int
+				"oldEndMin":            //TODO:,type:int
+			}
+		]
+	},
+	
+    "schedulerAssoc": //类型:SchedulerAssocConfig
+	{
+		"rule"://SchedulerAssocRule的list
+		[
+			{
+				"ssid":,                //TODO:,type:string
+				"band":,                //TODO:,type:int
+				"profileName":,         //TODO:,type:string
+				"profileId":,           //TODO:,type:int
+				"action":              //TODO:,type:int
+			}
+		]
+	},
+	
+    "schedulerAssocAp": //类型:SchedulerAssocAp
+	{
+		"rule":	//SchedulerAssocApRule的list
+		[
+			{
+				"apName":,              //TODO:,type:string
+				"mac":,                 //TODO:,type:string
+				"profileName":,         //TODO:,type:string
+				"profileId":,           //TODO:,type:int
+				"action":              //TODO:,type:int
+			}
+		]
+	},
+	
+    "qosConfig_2G": //类型:QosConfig
+	{
+		"radioId":0,            //TODO:,type:int
+		"apVoAifs":,            //TODO:,type:int
+		"apVoCwMin":,           //TODO:,type:int
+		"apVoCwMax":,           //TODO:,type:int
+		"apVoMaxBurst":,        //TODO:,type:int
+		"apViAifs":,            //TODO:,type:int
+		"apViCwMin":,           //TODO:,type:int
+		"apViCwMax":,           //TODO:,type:int
+		"apViMaxBurst":,        //TODO:,type:int
+		"apBeAifs":,            //TODO:,type:int
+		"apBeCwMin":,           //TODO:,type:int
+		"apBeCwMax":,           //TODO:,type:int
+		"apBeMaxBurst":,        //TODO:,type:int
+		"apBkAifs":,            //TODO:,type:int
+		"apBkCwMin":,           //TODO:,type:int
+		"apBkCwMax":,           //TODO:,type:int
+		"apBkMaxBurst":,        //TODO:,type:int
+		"wmmEnable":,           //TODO:,type:bool
+		"noAckEnable":,         //TODO:,type:bool
+		"uapsdEnable":,         //TODO:,type:bool
+		"staVoAifs":,           //TODO:,type:int
+		"staVoCwMin":,          //TODO:,type:int
+		"staVoCwMax":,          //TODO:,type:int
+		"staVoTxopLimit":,      //TODO:,type:int
+		"staViAifs":,           //TODO:,type:int
+		"staViCwMin":,          //TODO:,type:int
+		"staViCwMax":,          //TODO:,type:int
+		"staViTxopLimit":,      //TODO:,type:int
+		"staBeAifs":,           //TODO:,type:int
+		"staBeCwMin":,          //TODO:,type:int
+		"staBeCwMax":,          //TODO:,type:int
+		"staBeTxopLimit":,      //TODO:,type:int
+		"staBkAifs":,           //TODO:,type:int
+		"staBkCwMin":,          //TODO:,type:int
+		"staBkCwMax":,          //TODO:,type:int
+		"staBkTxopLimit":,      //TODO:,type:int
+	},
+	
+    "qosConfig_5G": //类型:QosConfig
+	{
+		"radioId":1,            //TODO:,type:int
+		"apVoAifs":,            //TODO:,type:int
+		"apVoCwMin":,           //TODO:,type:int
+		"apVoCwMax":,           //TODO:,type:int
+		"apVoMaxBurst":,        //TODO:,type:int
+		"apViAifs":,            //TODO:,type:int
+		"apViCwMin":,           //TODO:,type:int
+		"apViCwMax":,           //TODO:,type:int
+		"apViMaxBurst":,        //TODO:,type:int
+		"apBeAifs":,            //TODO:,type:int
+		"apBeCwMin":,           //TODO:,type:int
+		"apBeCwMax":,           //TODO:,type:int
+		"apBeMaxBurst":,        //TODO:,type:int
+		"apBkAifs":,            //TODO:,type:int
+		"apBkCwMin":,           //TODO:,type:int
+		"apBkCwMax":,           //TODO:,type:int
+		"apBkMaxBurst":,        //TODO:,type:int
+		"wmmEnable":,           //TODO:,type:bool
+		"noAckEnable":,         //TODO:,type:bool
+		"uapsdEnable":,         //TODO:,type:bool
+		"staVoAifs":,           //TODO:,type:int
+		"staVoCwMin":,          //TODO:,type:int
+		"staVoCwMax":,          //TODO:,type:int
+		"staVoTxopLimit":,      //TODO:,type:int
+		"staViAifs":,           //TODO:,type:int
+		"staViCwMin":,          //TODO:,type:int
+		"staViCwMax":,          //TODO:,type:int
+		"staViTxopLimit":,      //TODO:,type:int
+		"staBeAifs":,           //TODO:,type:int
+		"staBeCwMin":,          //TODO:,type:int
+		"staBeCwMax":,          //TODO:,type:int
+		"staBeTxopLimit":,      //TODO:,type:int
+		"staBkAifs":,           //TODO:,type:int
+		"staBkCwMin":,          //TODO:,type:int
+		"staBkCwMax":,          //TODO:,type:int
+		"staBkTxopLimit":,      //TODO:,type:int
+	},
+	
+    "rogueApGlobal": //类型:RogueApGlobal
+	{
+		"enable":true,			//TODO:,type:bool
+	},
+	
+    "rogueApSetting": //类型:RogueApConfig的list
+	[
+		{
+			"mac":,                //TODO:,type:string
+			"trust":               //TODO:,type:bool
+		}
+	],
+	
+	"logSetting"://类型:LogConfig
+	{
+		"mailEnable":,          //TODO:,type:bool
+		"mailFrom":,            //TODO:,type:string
+		"mailTo":,              //TODO:,type:string
+		"smtpServerIp":,        //TODO:,type:string
+		"mailAuth":,            //TODO:,type:bool
+		"mailUsername":,        //TODO:,type:string
+		"mailPassword":,        //TODO:,type:string
+		"timeMode":,            //TODO:,type:int
+		"fixationTimeHour":,    //TODO:,type:int
+		"fixationTimeMin":,     //TODO:,type:int
+		"periodTimeHour":,      //TODO:,type:int
+		"everyDayTime":,        //TODO:,type:string
+		"logServerEnable":,     //TODO:,type:bool
+		"logServerIp":,         //TODO:,type:string
+		"logServerPort":,       //TODO:,type:int
+		"nvramEnable":,         //TODO:,type:bool
+	},
+	
+    "led":	//类型:Led
+	{
+		"enable":,			//TODO:,type:string
+	},
+	
+    "ssh":	//类型:SshConfig
+	{
+		"sshserverPort":,       //TODO:,type:int
+		"sshenable":           	//TODO:,type:string
+	},
+	
+    "managementVlan":	//类型:ManagementVlanConfig
+	{
+		"managementVlanEnable":,	//TODO:,类型:string
+		"managementVlanId":			//TODO:,类型:int
+	},
+	
+    "userAccount":	//类型:UserAccountConfig
+	{
+		"curUsername":,         //TODO:,type:string
+		"curPassword":,         //TODO:,type:string
+		"newUsername":,         //TODO:,type:string
+		"newPassword":,         //TODO:,type:string
+	},
+	
+    "timeSetting":	//类型:TimeConfig
+	{
+		"timeZone":,            //TODO:,type:int
+		"date":,                //TODO:,type:string
+		"time":,                //TODO:,type:string
+		"ntpServer1":,          //TODO:,type:string
+		"ntpServer2":          	//TODO:,type:string
+	},
+	
+    "daylightSaving":	//类型:DaylightSaving
+	{
+		"dstEnable":,           //TODO:,type:bool
+		"dstMode":,             //TODO:,type:int
+		"modeCountry":,         //TODO:,type:int
+		"recurringTimeOffset":, //TODO:,type:int
+		"startMonth":,          //TODO:,type:int
+		"startCount":,          //TODO:,type:int
+		"startWeekday":,        //TODO:,type:int
+		"startHour":,           //TODO:,type:int
+		"startMin":,            //TODO:,type:int
+		"endMonth":,            //TODO:,type:int
+		"endCount":,            //TODO:,type:int
+		"endWeekday":,          //TODO:,type:int
+		"endHour":,             //TODO:,type:int
+		"endMin":,              //TODO:,type:int
+		"dateTimeOffset":,      //TODO:,type:int
+		"startDateYear":,       //TODO:,type:int
+		"startDateMonth":,      //TODO:,type:int
+		"startDateDay":,        //TODO:,type:int
+		"startDateHour":,       //TODO:,type:int
+		"startDateMin":,        //TODO:,type:int
+		"endDateYear":,         //TODO:,type:int
+		"endDateMonth":,        //TODO:,type:int
+		"endDateDay":,          //TODO:,type:int
+		"endDateHour":,         //TODO:,type:int
+		"endDateMin":          	//TODO:,type:int
+	},
+	
+    "system":	//类型:SystemConfig
+	{
+		"action":,				//TODO:,type:int
+		"param":				//TODO:,type:SystemConfigParam
+		{
+			"size":,                //TODO:,type:int
+			"md5":,                 //TODO:,type:string
+			"port":                	//TODO:,type:int		
+		}
+	},
+	
+    "clientConfig":	//类型:ClientConfig的list
+	[
+		{
+			"unauth":,				//TODO:,type:bool
+			"clientMac":			//TODO:,type:string
+		}
+	],
+	
+    "upgradeFile":	//类型:UpgradeFile
+	{
+		"fileData":				//TODO,类型:bytes[]
+	},
+	
+    "sequenceId":65529, 	//required, 序列id标识该特殊请求,类型:int
+    "configVersion":1000, 	//required, 配置版本,类型:int
+    "region":241,			//required, 地区,类型:int
+	
+    "limits_2G":	//类型:SsidRateLimit的list
+	[
+		{
+			"id":,                  //TODO:,type:int
+			"enable":,              //TODO:,type:bool
+			"downLimit":,           //TODO:,type:long
+			"upLimit":,             //TODO:,type:long
+			"ssidName":,            //TODO:,type:string
+			"radioId":0             //TODO:,type:int
+		}
+	],
+	
+    "limits_5G":	//类型:SsidRateLimit的list
+	[
+		{
+			"id":,                  //TODO:,type:int
+			"enable":,              //TODO:,type:bool
+			"downLimit":,           //TODO:,type:long
+			"upLimit":,             //TODO:,type:long
+			"ssidName":,            //TODO:,type:string
+			"radioId":1             //TODO:,type:int
+		}
+	],
+	
+    "rssi_2G":	//类型:RadioRssi
+	{
+		"enable":,              //TODO:,type:bool
+		"threshold":           	//TODO:,type:int
+	},
+	
+    "rssi_5G":	//类型:RadioRssi
+	{
+		"enable":,              //TODO:,type:bool
+		"threshold":           	//TODO:,type:int
+	},
+	
+    "clientOperation":	//类型:ClientControl的list
+	[
+		{
+			"clientMac":,           //TODO:,type:string
+			"operation":,           //TODO:,type:int
+			"ssid":,                //TODO:,type:string
+			"radioId":             	//TODO:,type:int
+		}
+	],
+	
+    "controllerInfo":	//类型:ControllerInfo
+	{
+		"ip":"",			//TODO:,type:string
+	},
+	
+    "trunkConfig":	//类型:TrunkConfig
+	{
+		"enable":,              //TODO:,type:int
+		"mode":                	//TODO:,type:int
+	}
+}

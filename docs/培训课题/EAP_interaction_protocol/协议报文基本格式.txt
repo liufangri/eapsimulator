@@ -1,0 +1,18 @@
+﻿协议报文数据格式如下：
+-----------------------------
+Length(4Bytes) |  Data(JSON)
+-----------------------------
+协议数据包括两部分，前面4字节为Length字段表示Data字段的长度（不包括Length字段本身）。
+后面是Data字段，Data字段数据均以JSON格式描述，数据包括header和body两部分。Data部分描述为JSON：
+{
+		"header" : 
+		{
+			"version":"1.0.0", //协议版本(目前未见有什么变化),类型：string
+			"mac": "50:c7:bf:75:f7:f0",    //MAC地址,类型：string
+			"error":0,   //返回值,类型：int
+			"type": 1 ,//报文类型，目前的type类型值参考《协议报文类型.txt》,类型：int
+		},
+		"body" : { … } //body部分则是根据header type类型不同，内容不同,具体参考Adoption和Management目录下的定义
+}
+
+

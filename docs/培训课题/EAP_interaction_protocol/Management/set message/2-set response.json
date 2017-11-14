@@ -1,0 +1,15 @@
+﻿{
+	"sequenceId":65535, 	//required,与set request中的值相同，类型：int
+	"errcode":0			//required,set request操作的结果，类型：int
+}
+
+上述回复中"sequenceId"支持的取值如下：
+BASE_SEQUENCE(0-65528)
+REBOOT_SEQUENCE              = 65535;
+TIME_SETTING_SEQUENCE        = 65534;
+INIT_RECORD_SEQUENCE         = 65533;
+RECONNECT_SEQUENCE           = 65532;
+BLOCK_UNBLOCK_SEQUENCE       = 65531;
+UNAUTH_SEQUENCE              = 65530;
+LAN_SETTING_SEQUENCE         = 65536;
+Client_RATE_LIMIT_SEQUENCE   = 65537;

@@ -1,0 +1,5 @@
+{
+	"auth": "abc" ,//required, 用户名和密码的RSA加密值,类型：string
+	"hash": "rsa",//required, 对auth值的SHA哈希值,类型：string
+	"sign":  "123"//required, 对auth和hash的RSA签名值,类型：string
+}

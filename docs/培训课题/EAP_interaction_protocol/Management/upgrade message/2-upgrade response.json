@@ -1,0 +1,3 @@
+ {
+	"errcode": //required,升级请求回复的错误码，类型：int
+ }

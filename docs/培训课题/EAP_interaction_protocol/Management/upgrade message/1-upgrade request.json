@@ -1,0 +1,4 @@
+﻿{
+	"port":29813, 		//required,UPGRADE服务器端口(TCP),类型：int
+	"length":18306012	//required, 要升级的文件长度,类型：int
+}

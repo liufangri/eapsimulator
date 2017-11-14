@@ -1,0 +1,4 @@
+{
+	"key": "TIifQHoNB26li5Jdf3YJOiC211KGx4IefHt27a/A3yaYO8SraBkBXUHBTjn+xIxYwLLZWDTLdMbnwFlKeLRL2fgZqQLOi4k194tYe657M75tHNDUj1kgJhP8SjsBS8fKrLtS5dRPfAEPsNjR/MMhly+lbWy0z+OQOvXfiLwNpfo=", 				//required,RC4密钥,类型：string
+	"configVersion": 1000 	//reqeuired,配置版本,类型：int
+}

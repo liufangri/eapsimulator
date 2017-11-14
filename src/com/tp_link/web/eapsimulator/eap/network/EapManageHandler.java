@@ -18,11 +18,9 @@ import com.tp_link.web.eapsimulator.tools.RC4Helper;
 import com.tp_link.web.eapsimulator.tools.RSAHelper;
 import com.tp_link.web.eapsimulator.tools.TypeConvert;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.aspectj.weaver.ast.Not;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -31,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ChannelHandler.Sharable
-public class EapManageHandler extends SimpleChannelInboundHandler<byte[]> {
+public class EapManageHandler extends ChannelInboundHandlerAdapter {
 
     private static final Log logger = LogFactory.getLog(EapManageHandler.class);
     private EapNetContext context;
@@ -44,7 +42,7 @@ public class EapManageHandler extends SimpleChannelInboundHandler<byte[]> {
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, byte[] msg) throws Exception {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         int port = ((InetSocketAddress) ctx.channel().localAddress()).getPort();
         VirtualEap virtualEap = context.getManageClient().getEapByPort(port);
         if (virtualEap == null) {
@@ -52,36 +50,36 @@ public class EapManageHandler extends SimpleChannelInboundHandler<byte[]> {
             return;
         }
 
-//        MsgControl msgControl = controlMap.get(port);
-//        if (msgControl == null) {
-//            // The first time using msgControl.
-//            logger.debug("Init msgControl for EAP-" + virtualEap.getMac());
-//            msgControl = new MsgControl();
-//            msgControl.initFirst();
-//            controlMap.put(port, msgControl);
-//        }
+        MsgControl msgControl = controlMap.get(port);
+        if (msgControl == null) {
+            // The first time using msgControl.
+            logger.debug("Init msgControl for EAP-" + virtualEap.getMac());
+            msgControl = new MsgControl();
+            msgControl.initFirst();
+            controlMap.put(port, msgControl);
+        }
 
-        String message = new String(msg);
-        processData(virtualEap, ctx, message);
-//
-//        ByteBuf byteBuf = (ByteBuf) msg;
-//        int ret = msgControl.isReadyToHandle(virtualEap, byteBuf);
-//        while (ret == MsgControl.HAVE_MORE) {
-//            String message = new String(msgControl.dataBytes);
-//            processData(virtualEap, ctx, message);
-//            msgControl.dataBytes = null;
-//            ret = msgControl.isReadyToHandle(virtualEap, byteBuf);
-//        }
-//        if (ret == MsgControl.READY) {
-//            String message = new String(msgControl.dataBytes);
-//            msgControl.dataBytes = null;
-//            processData(virtualEap, ctx, message);
-//        } else if (ret == MsgControl.NOT_READY) {
-//            logger.debug("EAP - " + virtualEap.getMac() + " received but still more, current: " +
-//                    msgControl.offset + " expect: " + msgControl.length);
-//        } else {
-//            logger.error("EAP - " + virtualEap.getMac() + " received wrong message!");
-//        }
+//        String message = new String(msg);
+//        processData(virtualEap, ctx, message);
+
+        ByteBuf byteBuf = (ByteBuf) msg;
+        int ret = msgControl.isReadyToHandle(virtualEap, byteBuf);
+        while (ret == MsgControl.HAVE_MORE) {
+            String message = new String(msgControl.dataBytes);
+            processData(virtualEap, ctx, message);
+            msgControl.dataBytes = null;
+            ret = msgControl.isReadyToHandle(virtualEap, byteBuf);
+        }
+        if (ret == MsgControl.READY) {
+            String message = new String(msgControl.dataBytes);
+            msgControl.dataBytes = null;
+            processData(virtualEap, ctx, message);
+        } else if (ret == MsgControl.NOT_READY) {
+            logger.debug("EAP - " + virtualEap.getMac() + " received but still more, current: " +
+                    msgControl.offset + " expect: " + msgControl.length);
+        } else {
+            logger.error("EAP - " + virtualEap.getMac() + " received wrong message!");
+        }
     }
 
     public void removeEapMsgCtr(Integer port) {
@@ -144,51 +142,32 @@ public class EapManageHandler extends SimpleChannelInboundHandler<byte[]> {
                                      VirtualEap virtualEap, ChannelHandlerContext ctx) {
 
         Map<String, Object> body = requestDataMap.get("body");
-        int configVersion;
+        Map<String, String> userAccount = (Map<String, String>) body.get("userAccount");
+        if (userAccount != null) {
+            virtualEap.setUserName(userAccount.get("newUsername"));
+            virtualEap.setPasswordMD5(userAccount.get("newPassword"));
+        }
+        virtualEap.setCurrentState(VirtualEap.State.CONFIGURING);
+        //TODO: handle config.
+        // Get sequenceId
+        int sequenceId;
         try {
-            Object o = body.get("configVersion");
+            Object o = body.get("sequenceId");
             if (o instanceof Double) {
-                configVersion = ((Double) o).intValue();
+                sequenceId = ((Double) o).intValue();
             } else if (o instanceof String) {
-                configVersion = Integer.parseInt((String) o);
+                sequenceId = Integer.parseInt((String) o);
             } else if (o instanceof Integer) {
-                configVersion = (Integer) o;
+                sequenceId = (Integer) o;
             } else {
                 return false;
             }
         } catch (NumberFormatException e) {
             return false;
-        } catch (NullPointerException e) {
-            logger.error("Body is null! " + body.toString());
-            return false;
         }
+        sendConfigResponse(ctx, virtualEap, sequenceId);
+        virtualEap.setCurrentState(VirtualEap.State.CONNECTED);
 
-        if (configVersion == 0) {
-            // A pre set.
-            virtualEap.setUserName(((Map<String, String>) body.get("userAccount")).get("newUsername"));
-            virtualEap.setPasswordMD5(((Map<String, String>) body.get("userAccount")).get("newPassword"));
-        } else {
-            virtualEap.setCurrentState(VirtualEap.State.CONFIGURING);
-            //TODO: handle config.
-            // Get sequenceId
-            int sequenceId;
-            try {
-                Object o = body.get("sequenceId");
-                if (o instanceof Double) {
-                    sequenceId = ((Double) o).intValue();
-                } else if (o instanceof String) {
-                    sequenceId = Integer.parseInt((String) o);
-                } else if (o instanceof Integer) {
-                    sequenceId = (Integer) o;
-                } else {
-                    return false;
-                }
-            } catch (NumberFormatException e) {
-                return false;
-            }
-            sendConfigResponse(ctx, virtualEap, sequenceId);
-            virtualEap.setCurrentState(VirtualEap.State.CONNECTED);
-        }
         return true;
     }
 

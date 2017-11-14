@@ -1,0 +1,15 @@
+/*以下body与《EAPConfigBody.json》中对应字段匹配，只列出了使用的字段，未使用(不再列出)的按默认填充*/
+{
+	"system":
+	{
+		"action":0,			//required,行为类型,类型:int
+		"param":			//unused,系统配置参数？,自定义类型:SystemConfigParam
+		{
+			"size":25,		//unused,类型:int
+			"md5":"asas",	//unused,类型:string
+			"port":24567,	//unused,类型:int
+		}
+	},
+	"configVersion":1000, 	//required,配置版本,类型:int
+	"sequenceId":65535 		//required,该值随具体设置不同，类型：int
+}

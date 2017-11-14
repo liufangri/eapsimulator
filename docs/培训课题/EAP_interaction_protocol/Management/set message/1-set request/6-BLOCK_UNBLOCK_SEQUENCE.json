@@ -1,0 +1,14 @@
+/*以下body与《EAPConfigBody.json》中对应字段匹配，只列出了使用的字段，未使用(不再列出)的按默认填充*/
+{
+    "clientOperation":	//类型:ClientControl的list
+	[
+		{
+			"clientMac":,           //TODO:,type:string
+			"operation":,           //TODO:,type:int
+			"ssid":,                //TODO:,type:string
+			"radioId":             	//频段类型(0:2.4G; 1:5G),类型:int
+		}
+	],
+	"configVersion":1000, 				//required,配置版本,类型:int
+	"sequenceId":65531 					//optional,该值随具体设置不同(publishEmptySettingEvent时为null)，类型：int
+}

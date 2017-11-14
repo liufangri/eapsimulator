@@ -1,0 +1,9 @@
+//只包含header部分，body为空
+{
+    "header": {
+        "version": "",
+        "type": "",
+        "mac": "",
+        "error": ""
+    }
+}

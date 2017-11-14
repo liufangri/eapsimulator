@@ -1,0 +1,20 @@
+﻿（1）Adoption报文
+报文类型							类型值
+Discovery							0x0001
+Pre Adopt Request					0x0002
+Pre Connect Info					0x0003
+Adopt Request						0x0010
+Adopt Response						0x0020
+
+（2）Management报文
+报文类型							类型值
+Inform Request						0x0100
+Inform Response						0x0200
+Set Request							0x1000
+Set Response						0x2000
+Forget Request						0x4000
+Upgrade Request						0x8000
+Upgrade Response					0x10000
+event portal query					0x0040
+event portal auth					0x0080
+forget request no reset				0x20000

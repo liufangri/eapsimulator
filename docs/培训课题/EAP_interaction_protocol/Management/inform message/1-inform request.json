@@ -1,0 +1,205 @@
+{
+	"deviceInfo":	//类型:DeviceInfo
+	{
+				"model":"EAP-120",			//required,型号,类型：string
+		"name":"EAP-120",			//optional,名称,类型：string
+		"firmwareVersion":"1.0.0",	//required,软件版本,类型：string
+		"upTime": "0 days 13:23:37",//required,运行时间,类型：string	            
+		"ip":"192.168.1.102",		//required,IP地址,类型：string
+		"modelVersion":"1.0",		//required,型号版本,类型：string
+		"hardwareVersion":"1.0"		//required,硬件版本,类型：string
+		
+		"model":"EAP-120",				//型号,类型：string                                                                                                           
+		"name":"EAP-120",      			//名称,类型：string                                                                                                           
+		"modelVersion":"1.0",        	//型号版本,类型：string                                                                                                           
+		"hardwareVersion":"1.0",     	//硬件版本,类型：string                                                                                                           
+		"firmwareVersion":"1.0.0",     	//软件版本,类型：string                                                                                                          
+		"upTime":"0 days 13:23:37",     //运行时间,类型：string                                                                                                           
+		"ip":"192.168.1.102",			//IP地址,类型：string                                                                                                          
+		"mask":"255.255.255.0",         //子网掩码,类型：string                                                                                                            
+		"cpuUti":,              		//TODO:,type:int                                                                                                              
+		"memUti":,              		//TODO:,type:int                                                                                                              
+		"cpuUti0":,             		//TODO:,type:int                                                                                                           
+		"cpuUti1":             			//TODO:,type:int             
+	},
+	
+	"clients":	//类型:ClientStats的list
+	[
+		{
+			"mac":,                 //TODO:,type:string
+			"radioId":,             //TODO:,type:int
+			"accessPoint":,         //TODO:,type:string
+			"ssid":,                //TODO:,type:string
+			"snr":,                 //TODO:,type:int
+			"ccq":,                 //TODO:,type:int
+			"rate":,                //TODO:,type:string
+			"down":,                //TODO:,type:long
+			"up":,                  //TODO:,type:long
+			"activeTime":,          //TODO:,type:string
+			"duration":,            //TODO:,type:string
+			"ip":,                  //TODO:,type:string
+			"deviceName":          	//TODO:,type:string
+		}
+	],
+	
+	"portalAuthClients":	//类型:ClientStats的list
+	[
+		{
+			"mac":,                 //TODO:,type:string
+			"radioId":,             //TODO:,type:int
+			"accessPoint":,         //TODO:,type:string
+			"ssid":,                //TODO:,type:string
+			"snr":,                 //TODO:,type:int
+			"ccq":,                 //TODO:,type:int
+			"rate":,                //TODO:,type:string
+			"down":,                //TODO:,type:long
+			"up":,                  //TODO:,type:long
+			"activeTime":,          //TODO:,type:string
+			"duration":,            //TODO:,type:string
+			"ip":,                  //TODO:,type:string
+			"deviceName":          	//TODO:,type:string
+		}
+	],
+	
+	"rogueApList":	//类型:RogueApStats的list
+	[
+		{
+			"mac":,                 //TODO:,type:string
+			"ssid":,                //TODO:,type:string
+			"band":,                //TODO:,type:int
+			"channel":,             //TODO:,type:int
+			"securityMode":,        //TODO:,type:int
+			"beaconInterval":,      //TODO:,type:int
+			"signal":              	//TODO:,type:int
+		}
+	],
+	
+	"trustApList":	//类型:RogueApStats的list
+	[
+		{
+			"mac":,                 //TODO:,type:string
+			"ssid":,                //TODO:,type:string
+			"band":,                //TODO:,type:int
+			"channel":,             //TODO:,type:int
+			"securityMode":,        //TODO:,type:int
+			"beaconInterval":,      //TODO:,type:int
+			"signal":              	//TODO:,type:int
+		}
+	],
+	
+	"radioTraffic_2G":	//类型:TrafficStats
+	{
+		"rxPackets":,           //TODO:,type:long
+		"txPackets":,           //TODO:,type:long
+		"rxBytes":,             //TODO:,type:long
+		"txBytes":,             //TODO:,type:long
+		"rxDroppedPackets":,    //TODO:,type:long
+		"txDroppedPackets":,    //TODO:,type:long
+		"rxDroppedBytes":,      //TODO:,type:long
+		"txDroppedBytes":,      //TODO:,type:long
+		"rxErrors":,            //TODO:,type:long
+		"txErrors":	            //TODO:,type:long
+	},
+	
+	"radioTraffic_5G":	//类型:TrafficStats
+	{
+		"rxPackets":,           //TODO:,type:long
+		"txPackets":,           //TODO:,type:long
+		"rxBytes":,             //TODO:,type:long
+		"txBytes":,             //TODO:,type:long
+		"rxDroppedPackets":,    //TODO:,type:long
+		"txDroppedPackets":,    //TODO:,type:long
+		"rxDroppedBytes":,      //TODO:,type:long
+		"txDroppedBytes":,      //TODO:,type:long
+		"rxErrors":,            //TODO:,type:long
+		"txErrors":	            //TODO:,type:long
+	},
+	
+	"lanTraffic":	//类型:TrafficStats
+	{
+		"rxPackets":,           //TODO:,type:long
+		"txPackets":,           //TODO:,type:long
+		"rxBytes":,             //TODO:,type:long
+		"txBytes":,             //TODO:,type:long
+		"rxDroppedPackets":,    //TODO:,type:long
+		"txDroppedPackets":,    //TODO:,type:long
+		"rxDroppedBytes":,      //TODO:,type:long
+		"txDroppedBytes":,      //TODO:,type:long
+		"rxErrors":,            //TODO:,type:long
+		"txErrors":	            //TODO:,type:long
+	},
+	
+	"lanInfo":	//类型:LanInfo
+	{
+		"mac":,                 //TODO:,type:string
+		"ip":,                  //TODO:,type:string
+		"netmask":             	//TODO:,type:string
+	},
+	
+	"systemLog":	//类型:SyslogStats的list
+	[
+		{
+			"time":,                //TODO:,type:string
+			"type":,                //TODO:,type:string
+			"level":,               //TODO:,type:string
+			"logContent":          	//TODO:,type:string
+		}
+	],
+	
+	"ssidStats_2G":	//类型:SsidStats的list
+	[
+		{
+			"id":,                  //TODO:,type:int
+			"ssidName":,            //TODO:,type:string
+			"clientNum":,           //TODO:,type:int
+			"downBytes":,           //TODO:,type:long
+			"upBytes":	            //TODO:,type:long
+		}
+	],
+	
+	"ssidStats_5G":	//类型:SsidStats的list
+	[
+		{
+			"id":,                  //TODO:,type:int
+			"ssidName":,            //TODO:,type:string
+			"clientNum":,           //TODO:,type:int
+			"downBytes":,           //TODO:,type:long
+			"upBytes":	            //TODO:,type:long
+		}
+	],
+	
+	"wSettings_2G":	//类型:WirelessInfo
+	{
+		"region":,              //TODO:,type:int
+		"channel":,             //TODO:,type:string
+		"bandWidth":,           //TODO:,type:string
+		"rdMode":,              //TODO:,type:string
+		"txRate":,              //TODO:,type:string
+		"txPower":             	//TODO:,type:string
+	},
+	
+	"wSettings_5G":	//类型:WirelessInfo
+	{
+		"region":,              //TODO:,type:int
+		"channel":,             //TODO:,type:string
+		"bandWidth":,           //TODO:,type:string
+		"rdMode":,              //TODO:,type:string
+		"txRate":,              //TODO:,type:string
+		"txPower":             	//TODO:,type:string
+	},
+	
+	"authedUsers":	//类型:AuthedUser的list
+	[
+		{
+			"clientMac":,           //TODO:,type:string
+			"radioId":,             //TODO:,type:int
+			"ssid":,                //TODO:,type:string
+			"authedResult":,        //TODO:,type:int
+			"startTime":,           //TODO:,type:long
+			"endTime":,             //TODO:,type:long
+			"upLimit":,             //TODO:,type:long
+			"downLimit":,           //TODO:,type:long
+			"dataUsageLimit":      	//TODO:,type:long
+		}
+	]
+}

@@ -1,0 +1,214 @@
+/*以下body与《EAPConfigBody.json》中对应字段匹配，列出了使用的字段，未使用(unused注明)的按默认填充*/
+{
+	"lanSetting":
+	{
+		...
+	},
+	"bindVlan":
+	{
+		...
+	},
+	
+	"wirelessBasic_2G":
+	{
+		...
+	}
+
+    "wirelessBasic_5G":
+	{
+		...
+	},
+	
+    "wirelessAdv_2G":
+	{
+		...
+	},
+	
+	"wirelessAdv_5G":
+	{
+		...
+	},
+	
+	"loadBalance_2G":
+	{
+		...
+	},
+	
+    "loadBalance_5G":
+	{
+		...
+	},
+	
+	"bandSteering":
+	{
+		...
+	},
+	
+    "accessControlRules":
+	[
+		...
+	],
+	
+	"ssid_2G":
+	{
+		...
+	},
+    "ssid_5G":
+	{
+		...
+	},
+	
+    "portalConfigList":
+	[
+		...
+	],
+	
+    "portalFreePolicyConfig":
+	{
+		...
+	},
+	
+    "macFilterGlobal":
+	{
+		...
+	},
+	
+    "macFilterList":
+	{
+		...
+	},
+	
+	"macFilterAssoc":
+	{
+		...
+	},
+	
+    "schedulerGlobal":
+	{
+		...
+	},
+	
+    "schedulerList":
+	{
+		...
+	},
+	
+    "schedulerAssoc":
+	{
+		...
+	},
+	
+    "schedulerAssocAp":
+	{
+		...
+	},
+	
+    "qosConfig_2G":
+	{
+		...
+	},
+	
+    "qosConfig_5G":
+	{
+		...
+	},
+	
+    "rogueApGlobal":
+	{
+		...
+	},
+	
+    "rogueApSetting":
+	[
+		...
+	],
+	
+	"logSetting":
+	{
+		...
+	},
+	
+    "led":
+	{
+		...
+	},
+	
+    "ssh":
+	{
+		...
+	},
+	
+    "managementVlan":
+	{
+		...
+	},
+	
+    "userAccount": //unused
+	{
+	
+	},
+	
+    "timeSetting":
+	{
+		...
+	},
+	
+    "daylightSaving": //unused
+	{
+	
+	},
+	
+    "system":	//unused
+	{
+	
+	},
+	
+    "clientConfig":	//unused
+	[
+	
+	],
+	
+    "upgradeFile":	//unused
+	{
+	
+	},
+	
+    "sequenceId":65533, 	//required, 序列id标识该特殊请求,类型:int
+    "configVersion":1000, 	//required, 配置版本,类型:int
+    "region":241,			//required, 地区,类型:int
+	
+    "limits_2G":
+	[
+		...
+	],
+	
+    "limits_5G":
+	[
+		...
+	],
+	
+    "rssi_2G":
+	{
+		...
+	},
+	
+    "rssi_5G":
+	{
+		...
+	},
+	
+    "clientOperation":
+	[
+		...
+	],
+	
+    "controllerInfo":	//unused
+	{
+	
+	},
+	
+    "trunkConfig":
+	{
+		...
+	}
+}
