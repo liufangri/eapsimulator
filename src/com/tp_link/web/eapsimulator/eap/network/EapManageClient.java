@@ -407,16 +407,17 @@ public class EapManageClient extends EapClient {
                     }
                 }
                 if (Thread.interrupted()) {
-                    logger.debug("Interrupted send information request loop");
+                    logger.debug("Information request thread interrupted!");
                     break;
                 }
                 try {
                     Thread.sleep(INFORM_SLEEP_TIME);
                 } catch (InterruptedException e) {
-                    logger.debug("Interrupted send information request loop");
+                    logger.debug("Information request thread interrupted!");
                     break;
                 }
             }
+            logger.info("Inform request thread stopped.");
         }
     }
 }

@@ -254,14 +254,15 @@ public class EapDiscoveryClient extends EapClient {
                 try {
                     Thread.sleep(DISCOVERY_SLEEP_TIME);
                 } catch (InterruptedException e) {
-                    logger.debug("Broadcast interrupted!");
+                    logger.debug("Broadcast thread interrupted!");
                     break;
                 }
                 if (Thread.interrupted()) {
-                    logger.debug("Broadcast interrupted!");
+                    logger.debug("Broadcast thread interrupted!");
                     break;
                 }
             }
+            logger.info("Broadcast thread stopped.");
         }
     }
 }

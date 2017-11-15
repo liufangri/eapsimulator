@@ -138,6 +138,7 @@ public class EapLogService implements NetLog {
                 }
 
             }
+            logger.info("Log thread stopped.");
         }
     }
 
