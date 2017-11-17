@@ -1,6 +1,7 @@
 CREATE TABLE `eap_device` (
   `EAP_ID` varchar(64) NOT NULL,
   `EAP_NAME` varchar(64) DEFAULT NULL,
+  `EAP_MODEL_NAME` varchar(64) NOT NULL,
   `EAP_MODEL_VERSION` varchar(64) NOT NULL,
   `EAP_SOFTWARE_VERSION` varchar(96) NOT NULL,
   `EAP_MAC_ADDRESS` varchar(32) NOT NULL,
@@ -9,10 +10,10 @@ CREATE TABLE `eap_device` (
   `EAP_MASK` varchar(32) DEFAULT NULL,
   `EAP_USER_NAME` varchar(32) NOT NULL,
   `EAP_PASSWORD_MD5` varchar(32) NOT NULL,
-  `EAP_MODEL_NAME` varchar(64) NOT NULL,
   PRIMARY KEY (`EAP_ID`),
   UNIQUE KEY `EAP_MAC_ADDRESS_UNIQUE` (`EAP_MAC_ADDRESS`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `eap_log` (
   `ID` varchar(40) NOT NULL,
   `EAP_ID` varchar(45) NOT NULL,
